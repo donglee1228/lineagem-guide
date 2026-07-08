@@ -196,6 +196,35 @@ table.skills td.lv{color:var(--gold);white-space:nowrap;font-size:.78rem}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .install-tip b{color:var(--gold)}
 .foot{text-align:center;color:#555b66;font-size:.62rem;margin-top:5px;flex:none}
+
+/* ===== 가이드형 상세 ===== */
+.hook{font-size:1.02rem;color:var(--gold);font-weight:700;line-height:1.5;margin:2px 0 18px;
+  padding:12px 14px;background:linear-gradient(180deg,rgba(201,162,75,.10),rgba(201,162,75,.03));
+  border:1px solid rgba(201,162,75,.28);border-radius:12px}
+.gsec{margin-bottom:18px}
+.gsec h3{font-size:.82rem;font-weight:800;letter-spacing:.3px;color:var(--gold);margin:0 0 8px;
+  display:flex;align-items:center;gap:7px}
+.gsec h3::before{content:"";width:5px;height:15px;background:var(--gold);border-radius:2px}
+.gp{margin:0;font-size:.92rem;line-height:1.65;color:#dcdad4;white-space:pre-wrap}
+.paths{display:flex;flex-direction:column;gap:9px}
+.path{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--gold-dim);
+  border-radius:11px;padding:10px 12px}
+.path .ph{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.path .ph b{font-size:.95rem;color:var(--text)}
+.pchip{font-size:.66rem;font-weight:700;color:var(--muted);background:var(--card);
+  border:1px solid var(--border);border-radius:999px;padding:2px 8px}
+.pnote{font-size:.86rem;line-height:1.6;color:#cfcdc7;white-space:pre-wrap}
+.funds{display:flex;flex-direction:column;gap:8px}
+.fund{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:10px;padding:9px 12px}
+.fund .fh{font-size:.8rem;font-weight:800;margin-bottom:3px}
+.fund .fb{font-size:.88rem;line-height:1.6;color:#d8d6d0;white-space:pre-wrap}
+.kslist{display:flex;flex-direction:column;gap:7px}
+.ks{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:9px 12px}
+.ks b{display:block;font-size:.9rem;color:var(--gold);margin-bottom:2px}
+.ks span{font-size:.85rem;line-height:1.55;color:#d0cec8}
+.conf-note{font-size:.72rem;color:var(--muted);line-height:1.5;margin:14px 0 10px;
+  padding:8px 11px;background:var(--card);border:1px solid var(--border);border-radius:9px}
 </style>
 </head>
 <body>
@@ -320,7 +349,10 @@ function hl(text){ // escape + 현재 검색어 골드 하이라이트
 /* 클래스별 검색 인덱스 + 필드 라벨 */
 function blobOf(c){
   var parts = [c.kr,c.tw,c.en,c.role,c.roleTag,c.oneLiner,c.overview,c.playstyle,
-    c.statsPriority,c.engraving,c.gear,c.hunting,c.pvp,c.twSpecific,c.beginnerTip,c.confidence];
+    c.hook,c.hunting,c.pk,c.tip,c.confidence];
+  if(c.funding){ parts.push(c.funding['무과금'],c.funding['소과금'],c.funding['과금']); }
+  (c.paths||[]).forEach(function(p){ parts.push(p.name,p.weapon,p.range,p.note); });
+  (c.keySkills||[]).forEach(function(k){ parts.push(k.name,k.why); });
   (c.skills||[]).forEach(function(s){ parts.push(s.name,s.tw,s.effect,s.lv); });
   (c.derived||[]).forEach(function(d){ parts.push(d.tw,d.en,d.role,d.desc); });
   return parts.filter(Boolean).join('  ');
@@ -330,17 +362,16 @@ CLASSES.forEach(function(c){ c._blob = blobOf(c).toLowerCase(); });
 /* 매칭 힌트: 검색어가 걸린 필드/스킬명 요약 */
 function matchHint(c,q){
   var hits=[];
-  var map=[['개요',c.overview],['플레이',c.playstyle],['스탯',c.statsPriority],
-    ['각인',c.engraving],['장비',c.gear],['사냥터',c.hunting],['PVP',c.pvp],
-    ['서버노트',c.serverNote||c.twSpecific],['초보팁',c.beginnerTip]];
+  var map=[['한줄',c.hook||c.oneLiner],['사냥',c.hunting],['PK',c.pk],['팁',c.tip]];
+  if(c.funding){ map.push(['무과금',c.funding['무과금']],['소과금',c.funding['소과금']],['과금',c.funding['과금']]); }
   map.forEach(function(m){ if(m[1] && String(m[1]).toLowerCase().indexOf(q)>=0) hits.push(m[0]); });
-  (c.skills||[]).forEach(function(s){
-    if((s.name&&s.name.toLowerCase().indexOf(q)>=0)||(s.tw&&s.tw.toLowerCase().indexOf(q)>=0)
-       ||(s.effect&&s.effect.toLowerCase().indexOf(q)>=0)) hits.push('스킬:'+(s.name||s.tw));
+  (c.paths||[]).forEach(function(p){
+    if((p.name&&p.name.toLowerCase().indexOf(q)>=0)||(p.weapon&&p.weapon.toLowerCase().indexOf(q)>=0)
+       ||(p.note&&String(p.note).toLowerCase().indexOf(q)>=0)) hits.push('갈래:'+(p.name||p.weapon));
   });
-  (c.derived||[]).forEach(function(d){
-    if((d.tw&&d.tw.toLowerCase().indexOf(q)>=0)||(d.desc&&String(d.desc).toLowerCase().indexOf(q)>=0))
-      hits.push('파생:'+(d.tw||d.en));
+  (c.keySkills||[]).forEach(function(s){
+    if((s.name&&s.name.toLowerCase().indexOf(q)>=0)||(s.why&&String(s.why).toLowerCase().indexOf(q)>=0))
+      hits.push('스킬:'+s.name);
   });
   return hits.slice(0,4);
 }
@@ -477,23 +508,31 @@ function openSheet(c){
     +(rt?'<span class="rolechip" style="background:'+roleColor(rt)+'">'+esc(rt)+'</span>':'')
     +'</div>';
 
-  var q = !!curQuery;
   var html='';
-  if(c.oneLiner) html+='<div class="oneliner">'+hl(c.oneLiner)+'</div>';
-  html+=section('▤','개요',c.overview||'미확인',{open:true});
-  html+=section('◈','플레이스타일',c.playstyle||'미확인',{open:q});
-  html+=section('▦','스탯 배분',c.statsPriority||'미확인',{open:q});
-  html+='<details class="sec"'+(q?' open':'')+'><summary><span class="ico">✦</span>스킬<span class="arw">▶</span></summary>'
-    +skillsTable(c.skills)+'</details>';
-  html+=section('❖','각인',c.engraving||'미확인',{open:q});
-  html+=section('⚔','장비 세팅',c.gear||'미확인',{open:q});
-  html+=section('⛰','사냥터',c.hunting||'미확인',{open:q});
-  html+=section('⚑','PVP',c.pvp||'미확인',{open:q});
-  html+=section('☰','본서버 특이사항',c.serverNote||c.twSpecific||'미확인',{open:q});
-  html+='<details class="sec"'+(q?' open':'')+'><summary><span class="ico">⑂</span>파생 클래스<span class="arw">▶</span></summary>'
-    +derivedBlock(c.derived)+'</details>';
-  html+=section('➤','초보 팁',c.beginnerTip||'미확인',{open:q});
-  html+=section('◉','신뢰도','<div class="sec-content"><span class="conf">'+hl(c.confidence||'미확인')+'</span></div>',{raw:true});
+  if(c.hook) html+='<div class="hook">'+hl(c.hook)+'</div>';
+  if(c.paths&&c.paths.length){
+    var ph=c.paths.map(function(p){
+      var chips=[p.weapon,p.range].filter(Boolean).map(function(x){return '<span class="pchip">'+hl(x)+'</span>';}).join('');
+      return '<div class="path"><div class="ph"><b>'+hl(p.name||'')+'</b>'+chips+'</div>'
+        +(p.note?'<div class="pnote">'+hl(p.note)+'</div>':'')+'</div>';
+    }).join('');
+    html+='<section class="gsec"><h3>무기 갈래</h3><div class="paths">'+ph+'</div></section>';
+  }
+  if(c.hunting) html+='<section class="gsec"><h3>사냥은 이렇게</h3><p class="gp">'+hl(c.hunting)+'</p></section>';
+  if(c.pk) html+='<section class="gsec"><h3>PK에선</h3><p class="gp">'+hl(c.pk)+'</p></section>';
+  if(c.funding){
+    var fo=[['무과금','var(--r-ranged)'],['소과금','var(--gold)'],['과금','var(--r-melee)']];
+    var fh=fo.map(function(o){ var v=c.funding[o[0]]; if(!v) return '';
+      return '<div class="fund" style="border-left-color:'+o[1]+'"><div class="fh" style="color:'+o[1]+'">'+o[0]+'</div><div class="fb">'+hl(v)+'</div></div>';
+    }).join('');
+    if(fh) html+='<section class="gsec"><h3>돈 얼마나 쓰냐에 따라</h3><div class="funds">'+fh+'</div></section>';
+  }
+  if(c.keySkills&&c.keySkills.length){
+    var ks=c.keySkills.map(function(s){ return '<div class="ks"><b>'+hl(s.name||'')+'</b><span>'+hl(s.why||'')+'</span></div>'; }).join('');
+    html+='<section class="gsec"><h3>꼭 챙길 스킬</h3><div class="kslist">'+ks+'</div></section>';
+  }
+  if(c.tip) html+='<section class="gsec"><h3>찐 팁</h3><p class="gp">'+hl(c.tip)+'</p></section>';
+  if(c.confidence) html+='<div class="conf-note">ⓘ '+hl(c.confidence)+'</div>';
   html+='<details class="sec"><summary><span class="ico">↗</span>출처<span class="arw">▶</span></summary>'
     +sourcesBlock(c.sources)+'</details>';
 
