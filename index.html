@@ -153,7 +153,7 @@ main{max-width:1180px;width:100%;margin:0 auto;padding:8px 12px calc(var(--safe-
 .sheet-head .titles .sub{font-size:.82rem;color:var(--muted);margin-top:2px}
 .sheet-head .titles .rolechip{display:inline-block;margin-top:8px;font-size:.7rem;font-weight:700;
   padding:4px 10px;border-radius:999px;color:#fff}
-#sheetClose{position:absolute;top:calc(var(--safe-t) + 10px);right:12px;z-index:5;width:38px;height:38px;
+#sheetClose,#engClose{position:absolute;top:calc(var(--safe-t) + 10px);right:12px;z-index:5;width:38px;height:38px;
   border-radius:50%;border:1px solid var(--border);background:rgba(20,22,28,.7);color:var(--text);
   font-size:1.2rem;line-height:1;display:flex;align-items:center;justify-content:center}
 .sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px calc(var(--safe-b) + 40px);flex:1}
@@ -246,6 +246,77 @@ table.ztable thead th{color:var(--muted);font-weight:700;font-size:.72rem;letter
   background:var(--card2);white-space:nowrap}
 table.ztable td.zname{font-weight:700;color:var(--text);min-width:130px}
 table.ztable td.mut{color:var(--muted);font-style:italic}
+
+/* ===== dmgType 배지 · 정체성 · 무기 리스트 ===== */
+.dmgbadge{display:inline-block;font-size:.8rem;font-weight:800;padding:5px 13px;border-radius:999px;
+  color:#fff;letter-spacing:.3px;margin-top:9px;box-shadow:0 2px 7px rgba(0,0,0,.4)}
+.identity-line{font-size:.92rem;color:#cfcdc7;line-height:1.6;margin:2px 0 16px;
+  padding-left:11px;border-left:2px solid var(--border)}
+.wlist{display:flex;flex-direction:column;gap:8px}
+.witem{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:10px;padding:8px 12px}
+.witem .wwhen{font-size:.7rem;font-weight:800;color:var(--gold);letter-spacing:.3px;margin-bottom:3px}
+.witem .wwhat{font-size:.89rem;line-height:1.55;color:#dcdad4}
+
+/* ===== 각인장비상자 특별 카드 ===== */
+.card.eng-card{border:1.5px solid var(--gold);
+  background:linear-gradient(180deg,#241f14,#1c2029)}
+.card.eng-card .imgwrap{display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(80% 80% at 50% 42%,#2a2213,#141821)}
+.card.eng-card .imgwrap::after{background:none}
+.card.eng-card .eng-emoji{font-size:2.1rem;filter:drop-shadow(0 2px 5px rgba(0,0,0,.55))}
+.card.eng-card .rolechip{background:var(--gold);color:#1a160c}
+.card.eng-card .kr{color:var(--gold)}
+
+/* ===== 각인 시트 ===== */
+#engSheet{position:fixed;inset:0;z-index:70;display:none}
+#engSheet.open{display:block}
+.eng-head{padding:calc(var(--safe-t) + 16px) 16px 10px;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#241f14,var(--bg));flex-shrink:0}
+.eng-head .et{font-size:1.35rem;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:8px}
+.eng-head .esub{font-size:.74rem;color:var(--muted);margin-top:3px;line-height:1.4}
+.eng-tabs{display:flex;gap:6px;overflow-x:auto;padding:9px 0 2px;-webkit-overflow-scrolling:touch}
+.eng-tabs::-webkit-scrollbar{height:0}
+.eng-tab{white-space:nowrap;padding:6px 12px;border-radius:999px;border:1px solid var(--border);
+  background:var(--card);color:var(--muted);font-size:.8rem;font-weight:700}
+.eng-tab.active{color:#1a160c;background:var(--gold);border-color:var(--gold)}
+.eng-body{overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:12px 14px calc(var(--safe-b) + 40px);flex:1}
+.eng-clshead{display:flex;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.eng-clshead .cn{font-size:1.1rem;font-weight:800}
+.spec-badge{display:inline-block;font-size:.74rem;font-weight:800;padding:3px 11px;
+  border-radius:999px;color:#fff;margin-left:9px}
+.grade-tabs{display:flex;gap:6px;margin:0 0 10px}
+.grade-tab{flex:1;text-align:center;padding:8px 4px;border-radius:9px;border:1px solid var(--border);
+  background:var(--card);color:var(--muted);font-size:.83rem;font-weight:700}
+.grade-tab.active{color:var(--text);border-color:var(--gold);background:rgba(201,162,75,.14)}
+.eng-search{width:100%;padding:8px 12px;font-size:.9rem;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none;margin-bottom:10px}
+.eng-search:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,75,.13)}
+.eng-legend{display:flex;flex-wrap:wrap;gap:6px 13px;font-size:.68rem;color:var(--muted);
+  background:var(--card);border:1px solid var(--border);border-radius:9px;padding:8px 11px;margin-bottom:10px}
+.eng-legend .lg{display:inline-flex;align-items:center;gap:5px}
+.eng-legend .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+.eng-note{font-size:.75rem;color:var(--gold);background:rgba(201,162,75,.1);
+  border:1px solid var(--gold-dim);border-radius:9px;padding:8px 11px;margin-bottom:10px;line-height:1.5}
+.eng-items{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:560px){.eng-items{grid-template-columns:1fr 1fr}}
+.eitem{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border);
+  border-radius:10px;padding:9px 12px}
+.eitem.excl{border-left-color:var(--r-melee);border-color:rgba(165,52,47,.55);
+  background:linear-gradient(180deg,rgba(165,52,47,.1),var(--card))}
+.eitem.common{border-left-color:var(--r-ranged)}
+.eitem.all13{border-left-color:var(--r-tank)}
+.eitem .en{font-size:.9rem;font-weight:700;color:var(--text);line-height:1.35}
+.eitem .emeta{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center}
+.ebadge{font-size:.64rem;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.2px;white-space:nowrap}
+.ebadge.excl{background:var(--r-melee);color:#fff}
+.ebadge.common{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.ebadge.all13{background:var(--r-tank);color:#fff}
+.ebadge.slot{background:var(--card2);color:#cfcdc7;border:1px solid var(--border)}
+.ebadge.wsp-melee{background:var(--r-melee);color:#fff}
+.ebadge.wsp-ranged{background:var(--r-ranged);color:#fff}
+.ebadge.wsp-magic{background:var(--r-magic);color:#fff}
 </style>
 </head>
 <body>
@@ -304,7 +375,18 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
   </div>
 </div>
 
+<!-- ===== 각인장비상자 전용 시트 ===== -->
+<div id="engSheet" aria-modal="true" role="dialog">
+  <div class="sheet-bg" data-eclose></div>
+  <div class="sheet-panel">
+    <button id="engClose" data-eclose aria-label="닫기">✕</button>
+    <div class="eng-head" id="engHead"></div>
+    <div class="eng-body" id="engBody"></div>
+  </div>
+</div>
+
 <script src="데이터.js"></script>
+<script src="각인상자.js"></script>
 <script>
 (function(){
 "use strict";
@@ -351,6 +433,25 @@ var ROLE_COLORS = {
 };
 function roleColor(rt){ return ROLE_COLORS[rt] || 'var(--border)'; }
 
+/* dmgType(대미지 타입) → 색: 탱커=블루/서포터=골드/마법=보라/원거리=초록/근접=딥레드 */
+function dmgColor(dt){
+  var s=String(dt||'');
+  if(/탱/.test(s)) return 'var(--r-tank)';
+  if(/서포터|버프|지원/.test(s)) return 'var(--r-support)';
+  if(/마법|마뎀|마댐/.test(s)) return 'var(--r-magic)';
+  if(/원거리|원뎀|원댐/.test(s)) return 'var(--r-ranged)';
+  if(/근접|근뎀|근댐/.test(s)) return 'var(--r-melee)';
+  return 'var(--border)';
+}
+
+/* 각인장비상자 데이터 */
+var ENG = window.LM_ENGRAVE || null;
+var ENG_CLASSES = (ENG && ENG['클래스별']) || {};
+var GRADES = (ENG && ENG['등급순서']) || ['일반','상급','빛나는','최상급'];
+var SPEC_COLORS = {'근접':'var(--r-melee)','원거리':'var(--r-ranged)','마법':'var(--r-magic)',
+  '탱커':'var(--r-tank)','서포터':'var(--r-support)'};
+function specColor(s){ return SPEC_COLORS[s] || 'var(--gold)'; }
+
 /* ---------- 유틸 ---------- */
 function esc(s){ return String(s==null?'':s)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -367,36 +468,39 @@ function hl(text){ // escape + 현재 검색어 골드 하이라이트
   }catch(e){ return t; }
 }
 
-/* 클래스별 검색 인덱스 + 필드 라벨 */
+/* 클래스별 검색 인덱스 (신 스키마) */
 function blobOf(c){
-  var parts = [c.kr,c.en,c.role,c.roleTag,c.confidence];
+  var parts = [c.kr,c.en,c.roleTag,c.dmgType,c.identity,c.confidence];
   if(c.pve){
-    parts.push(c.pve.weapon,c.pve.stats,c.pve.route);
+    parts.push(c.pve.stat,c.pve.route);
+    (c.pve.weapons||[]).forEach(function(w){ parts.push(w.when,w.what); });
     (c.pve.skills||[]).forEach(function(s){ parts.push(s.name,s.why); });
-    (c.pve.zones||[]).forEach(function(z){ parts.push(z.name,z.note,z.level,z.phyDef,z.magDef,z.reduction); });
   }
   if(c.pk){
-    parts.push(c.pk.weapon,c.pk.stats,c.pk.element,c.pk.route);
+    parts.push(c.pk.stat,c.pk.element,c.pk.route,c.pk.weapon);
+    (c.pk.weapons||[]).forEach(function(w){ parts.push(w.when,w.what); });
     (c.pk.skills||[]).forEach(function(s){ parts.push(s.name,s.why); });
   }
   return parts.filter(Boolean).join('  ');
 }
 CLASSES.forEach(function(c){ c._blob = blobOf(c).toLowerCase(); });
 
-/* 매칭 힌트: 검색어가 걸린 필드/스킬명 요약 */
+/* 매칭 힌트: 검색어가 걸린 필드/스킬명 요약 (신 스키마) */
 function matchHint(c,q){
   var hits=[];
   function has(v){ return v && String(v).toLowerCase().indexOf(q)>=0; }
+  if(has(c.dmgType)) hits.push('타입');
+  if(has(c.identity)) hits.push('정체성');
   if(c.pve){
-    if(has(c.pve.weapon)) hits.push('무기');
-    if(has(c.pve.stats)) hits.push('스텟');
+    (c.pve.weapons||[]).forEach(function(w){ if(has(w.when)||has(w.what)) hits.push('무기'); });
+    if(has(c.pve.stat)) hits.push('스텟');
     if(has(c.pve.route)) hits.push('사냥터루트');
     (c.pve.skills||[]).forEach(function(s){ if(has(s.name)||has(s.why)) hits.push('스킬:'+s.name); });
-    (c.pve.zones||[]).forEach(function(z){ if(has(z.name)||has(z.note)) hits.push('사냥터:'+z.name); });
   }
   if(c.pk){
+    (c.pk.weapons||[]).forEach(function(w){ if(has(w.when)||has(w.what)) hits.push('PK무기'); });
     if(has(c.pk.weapon)) hits.push('PK무기');
-    if(has(c.pk.stats)) hits.push('PK스텟');
+    if(has(c.pk.stat)) hits.push('PK스텟');
     if(has(c.pk.element)) hits.push('속성');
     if(has(c.pk.route)) hits.push('쟁터루트');
     (c.pk.skills||[]).forEach(function(s){ if(has(s.name)||has(s.why)) hits.push('PK스킬:'+s.name); });
@@ -451,7 +555,7 @@ var ROLES=['전체','탱커','근접딜러','원거리딜러','마법딜러','�
 var grid=document.getElementById('grid');
 var emptyEl=document.getElementById('empty');
 function cardHTML(c){
-  var rt=c.roleTag||c.role||'';
+  var rt=c.roleTag||'';
   return '<div class="card" data-key="'+esc(c.key)+'" style="--rolebar:'+roleColor(rt)+'">'
     +'<div class="imgwrap">'
       +(rt?'<span class="rolechip" style="background:'+roleColor(rt)+'">'+esc(rt)+'</span>':'')
@@ -459,19 +563,26 @@ function cardHTML(c){
         +'onerror="this.style.opacity=.25"></div>'
     +'<div class="body">'
       +'<div class="kr">'+hl(c.kr)+'</div>'
-      +'<div class="tw">'+hl(c.tw||'')+(c.en?' · '+esc(c.en):'')+'</div>'
-      +'<div class="one"></div>'
       +'<div class="matchhint-slot"></div>'
     +'</div></div>';
+}
+/* 14번째 특별 카드 — 각인장비상자 (필터/검색 무관 항상 표시) */
+function engCardHTML(){
+  if(!ENG) return '';
+  return '<div class="card eng-card" data-eng-card="1">'
+    +'<div class="imgwrap"><span class="rolechip">특별</span>'
+      +'<span class="eng-emoji">📦</span></div>'
+    +'<div class="body"><div class="kr">각인장비상자</div>'
+      +'<div class="matchhint-slot"></div></div></div>';
 }
 function render(){
   var q=curQuery.toLowerCase().trim();
   var shown=0;
-  grid.innerHTML=CLASSES.map(cardHTML).join('');
+  grid.innerHTML=CLASSES.map(cardHTML).join('') + engCardHTML();
   CLASSES.forEach(function(c){
     var el=grid.querySelector('.card[data-key="'+cssEsc(c.key)+'"]');
     if(!el) return;
-    var roleOk = curRole==='전체' || (c.roleTag||c.role)===curRole;
+    var roleOk = curRole==='전체' || c.roleTag===curRole;
     var qOk = !q || c._blob.indexOf(q)>=0;
     if(roleOk && qOk){ shown++;
       if(q){
@@ -484,6 +595,8 @@ function render(){
     } else { el.classList.add('hide'); }
     el.addEventListener('click',function(){ openSheet(c); });
   });
+  var ec=grid.querySelector('.eng-card');
+  if(ec) ec.addEventListener('click', openEngSheet);
   emptyEl.style.display = shown? 'none':'block';
 }
 function cssEsc(s){ return String(s).replace(/["\\]/g,'\\$&'); }
@@ -503,98 +616,77 @@ function section(icon,title,content,opts){
     +'<summary><span class="ico">'+icon+'</span>'+esc(title)
       +'<span class="arw">▶</span></summary>'+body+'</details>';
 }
-function skillsTable(skills){
-  if(!skills||!skills.length) return '<div class="sec-content muted-txt">미확인</div>';
-  var rows=skills.map(function(s){
-    return '<tr><td class="nm">'+hl(s.name||'')+(s.tw?'<div class="tw">'+hl(s.tw)+'</div>':'')+'</td>'
-      +'<td>'+hl(s.effect||'')+'</td>'
-      +'<td class="lv">'+(s.lv?hl(s.lv):'')+'</td></tr>';
-  }).join('');
-  return '<div style="padding:2px 12px 12px"><table class="skills">'
-    +'<thead><tr><th>스킬</th><th>효과</th><th>Lv</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
-}
-function derivedBlock(derived){
-  if(!derived||!derived.length) return '<div class="sec-content muted-txt">미확인</div>';
-  var html=derived.map(function(d){
-    var rt=d.role||'';
-    return '<div class="d"><div class="h"><b>'+hl(d.tw||'')+'</b>'
-      +(d.en?'<span class="en">'+esc(d.en)+'</span>':'')
-      +(rt?'<span class="rt" style="background:'+roleColor(rt)+'">'+esc(rt)+'</span>':'')+'</div>'
-      +(d.desc?'<div class="desc">'+hl(d.desc)+'</div>':'')+'</div>';
-  }).join('');
-  return '<div class="sec-content" style="padding-top:8px"><div class="derived">'+html+'</div></div>';
-}
 function sourcesBlock(src){
   if(!src||!src.length) return '<div class="sec-content muted-txt">미확인</div>';
   var li=src.map(function(u){ return '<li><a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(u)+'</a></li>'; }).join('');
   return '<div class="sec-content"><ul class="sources">'+li+'</ul></div>';
 }
 
+// 라벨된 소블록
+function subBlock(label,content){
+  var mut = isUnknown(content) ? ' mut' : '';
+  return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+    +'<div class="subbody'+mut+'">'+hl(content||'미확인')+'</div></div>';
+}
+// 스킬 컴팩트 리스트 (name 굵게 + why 회색)
+function skillSub(label,skills){
+  if(!skills||!skills.length){
+    return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+      +'<div class="subbody mut">미확인</div></div>';
+  }
+  var ks=skills.map(function(sk){
+    return '<div class="ks"><b>'+hl(sk.name||'')+'</b><span>'+hl(sk.why||'')+'</span></div>';
+  }).join('');
+  return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+    +'<div class="kslist">'+ks+'</div></div>';
+}
+// 무기: 상황(when) → 무기(what) 리스트
+function weaponSub(label,weapons,fallback){
+  var list = weapons&&weapons.length;
+  if(!list){
+    return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+      +'<div class="subbody'+(fallback?'':' mut')+'">'+hl(fallback||'미확인')+'</div></div>';
+  }
+  var ws=weapons.map(function(w){
+    return '<div class="witem"><div class="wwhen">'+hl(w.when||'')+'</div>'
+      +'<div class="wwhat">'+hl(w.what||'')+'</div></div>';
+  }).join('');
+  return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+    +'<div class="wlist">'+ws+'</div></div>';
+}
+
 function openSheet(c){
-  var rt=c.roleTag||c.role||'';
+  var rt=c.roleTag||'';
   sheetHead.innerHTML=
     '<div class="hero"><img src="'+esc(c.img||('assets/'+c.key+'.jpg'))+'" alt="'+esc(c.kr)+'" onerror="this.style.opacity=.2"></div>'
     +'<div class="titles"><div class="kr">'+hl(c.kr)+'</div>'
-    +'<div class="sub">'+hl(c.tw||'')+(c.en?' · '+esc(c.en):'')+(c.role?' · '+esc(c.role):'')+'</div>'
-    +(rt?'<span class="rolechip" style="background:'+roleColor(rt)+'">'+esc(rt)+'</span>':'')
+    +'<div class="sub">'+(c.en?esc(c.en):'')+(rt?' · '+esc(rt):'')+'</div>'
+    +(c.dmgType?'<span class="dmgbadge" style="background:'+dmgColor(c.dmgType)+'">'+esc(c.dmgType)+'</span>':'')
     +'</div>';
 
   var html='';
 
-  // 소블록 헬퍼
-  function subBlock(label,content){
-    var mut = isUnknown(content) ? ' mut' : '';
-    return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
-      +'<div class="subbody'+mut+'">'+hl(content||'')+'</div></div>';
-  }
-  function skillSub(label,skills){
-    if(!skills||!skills.length){
-      return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
-        +'<div class="subbody mut">미확인</div></div>';
-    }
-    var ks=skills.map(function(sk){
-      return '<div class="ks"><b>'+hl(sk.name||'')+'</b><span>'+hl(sk.why||'')+'</span></div>';
-    }).join('');
-    return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
-      +'<div class="kslist">'+ks+'</div></div>';
-  }
-  function zoneCell(v,cls){
-    var m = isUnknown(v) ? ' mut' : '';
-    return '<td class="'+(cls||'')+m+'">'+hl(v||'')+'</td>';
-  }
-  function zoneTable(zones){
-    if(!zones||!zones.length){
-      return '<div class="subblk"><div class="sublabel">사냥터별 세팅</div>'
-        +'<div class="subbody mut">미확인</div></div>';
-    }
-    var head='<thead><tr><th>사냥터</th><th>권장레벨</th><th>물방</th><th>마방</th><th>리덕</th><th>비고</th></tr></thead>';
-    var rows=zones.map(function(z){
-      return '<tr>'+zoneCell(z.name,'zname')+zoneCell(z.level)+zoneCell(z.phyDef)
-        +zoneCell(z.magDef)+zoneCell(z.reduction)+zoneCell(z.note)+'</tr>';
-    }).join('');
-    return '<div class="subblk"><div class="sublabel">사냥터별 세팅</div>'
-      +'<div class="ztable-wrap"><table class="ztable">'+head+'<tbody>'+rows+'</tbody></table></div></div>';
-  }
+  // 정체성 한 줄 (담백하게)
+  if(c.identity) html+='<div class="identity-line">'+hl(c.identity)+'</div>';
 
-  // 사냥 (PvE) — 기본 펼침
+  // 사냥 (PvE) — 기본 펼침, 무기 최상단
   var pve=c.pve||{};
   var pveHtml='<div class="sec-content-raw">'
-    +subBlock('무기',pve.weapon)
-    +subBlock('스텟',pve.stats)
+    +weaponSub('무기',pve.weapons)
+    +subBlock('스텟',pve.stat)
     +skillSub('스킬',pve.skills)
-    +subBlock('추천 사냥터 루트',pve.route)
-    +zoneTable(pve.zones)
+    +subBlock('사냥터 루트',pve.route)
     +'</div>';
   html+=section('⚔','사냥 (PvE)',pveHtml,{raw:true,open:true});
 
   // 피케이 (PK) — 기본 접힘
   var pk=c.pk||{};
   var pkHtml='<div class="sec-content-raw">'
-    +subBlock('무기',pk.weapon)
-    +subBlock('스텟',pk.stats)
+    +weaponSub('무기',pk.weapons,pk.weapon)
+    +subBlock('스텟',pk.stat)
     +skillSub('스킬',pk.skills)
     +subBlock('속성',pk.element)
-    +subBlock('추천 사냥터·쟁터 루트',pk.route)
+    +subBlock('루트',pk.route)
     +'</div>';
   html+=section('🗡','피케이 (PK)',pkHtml,{raw:true});
 
@@ -609,6 +701,123 @@ function openSheet(c){
 }
 function closeSheet(){ sheet.classList.remove('open'); document.body.style.overflow=''; }
 sheet.addEventListener('click',function(e){ if(e.target.hasAttribute('data-close')) closeSheet(); });
+
+/* ---------- 각인장비상자 시트 ---------- */
+var engSheet=document.getElementById('engSheet');
+var engHead=document.getElementById('engHead');
+var engBody=document.getElementById('engBody');
+var engState={ key:null, grade:'일반', q:'' };
+
+function engClassKeys(){
+  return CLASSES.map(function(c){ return c.key; }).filter(function(k){ return ENG_CLASSES[k]; });
+}
+function engHl(text){
+  var t=esc(text), q=engState.q;
+  if(!q) return t;
+  try{ return t.replace(new RegExp('('+reEsc(q)+')','gi'),'<mark>$1</mark>'); }
+  catch(e){ return t; }
+}
+function wspBadge(ws){
+  if(ws==='근접') return '<span class="ebadge wsp-melee">근접 특화</span>';
+  if(ws==='원거리') return '<span class="ebadge wsp-ranged">원거리 특화</span>';
+  if(ws==='마법') return '<span class="ebadge wsp-magic">마법 특화</span>';
+  return '';
+}
+function engItemCard(it){
+  var cls='eitem', badge='';
+  if(it.exclusive){ cls+=' excl'; badge='<span class="ebadge excl">전용</span>'; }
+  else if(it.shared>=13){ cls+=' all13'; badge='<span class="ebadge all13">전체공통 13종</span>'; }
+  else { cls+=' common'; badge='<span class="ebadge common">공유 '+esc(it.shared)+'종</span>'; }
+  var mut = isUnknown(it.status)||isUnknown(it.gubun) ? ' dim' : '';
+  return '<div class="'+cls+mut+'"><div class="en">'+engHl(it.name)+'</div>'
+    +'<div class="emeta">'+badge
+    +(it.slot?'<span class="ebadge slot">'+esc(it.slot)+'</span>':'')
+    +wspBadge(it.weaponSpec)+'</div></div>';
+}
+function engItemsHtml(){
+  var cdata=ENG_CLASSES[engState.key]; if(!cdata) return '';
+  var items=(cdata['등급'] && cdata['등급'][engState.grade]) || [];
+  var q=engState.q;
+  var filtered=items.filter(function(it){ return !q || String(it.name).toLowerCase().indexOf(q)>=0; });
+  if(!filtered.length) return '<div class="empty" style="padding:26px">'
+    +(q?'검색 결과가 없어요.':'해당 등급 데이터가 없어요.')+'</div>';
+  return '<div class="eng-items">'+filtered.map(engItemCard).join('')+'</div>';
+}
+function reRenderEngItems(){
+  var w=document.getElementById('engItemsWrap');
+  if(w) w.innerHTML=engItemsHtml();
+}
+function renderEng(){
+  var key=engState.key, cdata=ENG_CLASSES[key];
+  if(!cdata){ engHead.innerHTML=''; engBody.innerHTML=''; return; }
+
+  // 헤더 + 클래스 선택 탭
+  var tabs=engClassKeys().map(function(k){
+    return '<button class="eng-tab'+(k===key?' active':'')+'" data-eng-key="'+esc(k)+'">'
+      +esc(ENG_CLASSES[k].kr)+'</button>';
+  }).join('');
+  engHead.innerHTML='<div class="et">📦 각인장비상자</div>'
+    +'<div class="esub">클래스별 각인상자 드롭 장비 · 전용(강조)/공유 색으로 구분</div>'
+    +'<div class="eng-tabs">'+tabs+'</div>';
+
+  // 본문: 선택 클래스 + spec 배지, 등급 탭, 검색, 범례, note, 아이템
+  var specB = cdata.spec
+    ? '<span class="spec-badge" style="background:'+specColor(cdata.spec)+'">'+esc(cdata.spec)+'</span>' : '';
+  var clsHead='<div class="eng-clshead"><span class="cn">'+esc(cdata.kr)+'</span>'+specB+'</div>';
+
+  var gt=GRADES.map(function(g){
+    return '<button class="grade-tab'+(g===engState.grade?' active':'')+'" data-eng-grade="'+esc(g)+'">'
+      +esc(g)+'</button>';
+  }).join('');
+
+  var legend='<div class="eng-legend">'
+    +'<span class="lg"><span class="sw" style="background:var(--r-melee)"></span>전용(이 클래스만)</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--r-ranged)"></span>공유(2~12종)</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--r-tank)"></span>전체공통(13종)</span>'
+    +'<span class="lg"><span class="ebadge wsp-melee">근</span>'
+      +'<span class="ebadge wsp-ranged">원</span>'
+      +'<span class="ebadge wsp-magic">마</span> 무기 특화</span>'
+    +'</div>';
+
+  var items=(cdata['등급'] && cdata['등급'][engState.grade]) || [];
+  var noteHtml='';
+  if(items.length && items[0].note){
+    noteHtml='<div class="eng-note">✦ '+esc(items[0].note)+'</div>';
+  }
+
+  engBody.innerHTML=clsHead
+    +'<div class="grade-tabs">'+gt+'</div>'
+    +'<input class="eng-search" id="engSearch" type="search" autocomplete="off" '
+      +'placeholder="각인 이름 검색…" value="'+esc(engState.q)+'" />'
+    +legend+noteHtml
+    +'<div id="engItemsWrap">'+engItemsHtml()+'</div>';
+  engBody.scrollTop=0;
+}
+function openEngSheet(){
+  if(!ENG) return;
+  var keys=engClassKeys();
+  if(!engState.key || !ENG_CLASSES[engState.key]) engState.key=keys[0]||null;
+  engState.grade='일반'; engState.q='';
+  renderEng();
+  engSheet.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeEngSheet(){ engSheet.classList.remove('open'); document.body.style.overflow=''; }
+engSheet.addEventListener('click',function(e){ if(e.target.hasAttribute('data-eclose')) closeEngSheet(); });
+engHead.addEventListener('click',function(e){
+  var t=e.target.closest('[data-eng-key]');
+  if(t){ engState.key=t.getAttribute('data-eng-key'); engState.q=''; engState.grade='일반'; renderEng(); }
+});
+engBody.addEventListener('click',function(e){
+  var g=e.target.closest('[data-eng-grade]');
+  if(g){ engState.grade=g.getAttribute('data-eng-grade'); renderEng(); }
+});
+engBody.addEventListener('input',function(e){
+  if(e.target.id==='engSearch'){
+    engState.q=e.target.value.toLowerCase().trim();
+    reRenderEngItems();
+  }
+});
 
 /* ---------- 검색 ---------- */
 var searchEl=document.getElementById('search');
@@ -629,7 +838,8 @@ document.addEventListener('keydown',function(e){
     e.preventDefault();
     searchEl.focus(); searchEl.select();
   } else if(k==='escape'){
-    if(sheet.classList.contains('open')){ closeSheet(); }
+    if(engSheet.classList.contains('open')){ closeEngSheet(); }
+    else if(sheet.classList.contains('open')){ closeSheet(); }
     else if(document.activeElement===searchEl && searchEl.value){ searchEl.value=''; onSearch(); }
     else if(searchEl.value){ searchEl.value=''; onSearch(); }
   }
