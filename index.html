@@ -198,9 +198,6 @@ table.skills td.lv{color:var(--gold);white-space:nowrap;font-size:.78rem}
 .foot{text-align:center;color:#555b66;font-size:.62rem;margin-top:5px;flex:none}
 
 /* ===== 가이드형 상세 ===== */
-.hook{font-size:1.02rem;color:var(--gold);font-weight:700;line-height:1.5;margin:2px 0 18px;
-  padding:12px 14px;background:linear-gradient(180deg,rgba(201,162,75,.10),rgba(201,162,75,.03));
-  border:1px solid rgba(201,162,75,.28);border-radius:12px}
 .gsec{margin-bottom:18px}
 .gsec h3{font-size:.82rem;font-weight:800;letter-spacing:.3px;color:var(--gold);margin:0 0 8px;
   display:flex;align-items:center;gap:7px}
@@ -225,6 +222,30 @@ table.skills td.lv{color:var(--gold);white-space:nowrap;font-size:.78rem}
 .ks span{font-size:.85rem;line-height:1.55;color:#d0cec8}
 .conf-note{font-size:.72rem;color:var(--muted);line-height:1.5;margin:14px 0 10px;
   padding:8px 11px;background:var(--card);border:1px solid var(--border);border-radius:9px}
+
+/* ===== 신규: 사냥(PvE)/피케이(PK) 대섹션 소블록 ===== */
+.sec-content-raw{padding:6px 15px 15px}
+.subblk{margin-bottom:15px}
+.subblk:last-child{margin-bottom:2px}
+.sublabel{font-size:.75rem;font-weight:800;letter-spacing:.4px;color:var(--gold);
+  margin:0 0 6px;display:flex;align-items:center;gap:6px}
+.sublabel::before{content:"";width:4px;height:13px;background:var(--gold);border-radius:2px}
+.subbody{font-size:.9rem;line-height:1.62;color:#dcdad4;white-space:pre-wrap}
+.subbody.mut{color:var(--muted);font-style:italic}
+
+/* 사냥터별 세팅 표 (좁은 화면 가로스크롤) */
+.ztable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);
+  border-radius:10px;margin-top:2px}
+.ztable-wrap::-webkit-scrollbar{height:6px}
+.ztable-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+table.ztable{width:100%;min-width:640px;border-collapse:collapse;font-size:.8rem}
+table.ztable th,table.ztable td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.45;white-space:pre-wrap}
+table.ztable tr:last-child td{border-bottom:none}
+table.ztable thead th{color:var(--muted);font-weight:700;font-size:.72rem;letter-spacing:.3px;
+  background:var(--card2);white-space:nowrap}
+table.ztable td.zname{font-weight:700;color:var(--text);min-width:130px}
+table.ztable td.mut{color:var(--muted);font-style:italic}
 </style>
 </head>
 <body>
@@ -253,7 +274,7 @@ table.skills td.lv{color:var(--gold);white-space:nowrap;font-size:.78rem}
     <div class="searchwrap">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z"/></svg>
       <input id="search" type="search" inputmode="search" autocomplete="off"
-             placeholder="검색… (스킬·각인·사냥터·특이사항 전체)" aria-label="검색" />
+             placeholder="검색… (스킬·사냥터·물방·속성·무기 전체)" aria-label="검색" />
       <button id="clearBtn" aria-label="검색 지우기">✕</button>
     </div>
     <div class="hint"><kbd>Ctrl</kbd>+<kbd>F</kbd> 로 바로 검색 · <kbd>ESC</kbd> 로 해제</div>
@@ -348,32 +369,42 @@ function hl(text){ // escape + 현재 검색어 골드 하이라이트
 
 /* 클래스별 검색 인덱스 + 필드 라벨 */
 function blobOf(c){
-  var parts = [c.kr,c.tw,c.en,c.role,c.roleTag,c.oneLiner,c.overview,c.playstyle,
-    c.hook,c.hunting,c.pk,c.tip,c.confidence];
-  if(c.funding){ parts.push(c.funding['무과금'],c.funding['소과금'],c.funding['과금']); }
-  (c.paths||[]).forEach(function(p){ parts.push(p.name,p.weapon,p.range,p.note); });
-  (c.keySkills||[]).forEach(function(k){ parts.push(k.name,k.why); });
-  (c.skills||[]).forEach(function(s){ parts.push(s.name,s.tw,s.effect,s.lv); });
-  (c.derived||[]).forEach(function(d){ parts.push(d.tw,d.en,d.role,d.desc); });
-  return parts.filter(Boolean).join('  ');
+  var parts = [c.kr,c.en,c.role,c.roleTag,c.confidence];
+  if(c.pve){
+    parts.push(c.pve.weapon,c.pve.stats,c.pve.route);
+    (c.pve.skills||[]).forEach(function(s){ parts.push(s.name,s.why); });
+    (c.pve.zones||[]).forEach(function(z){ parts.push(z.name,z.note,z.level,z.phyDef,z.magDef,z.reduction); });
+  }
+  if(c.pk){
+    parts.push(c.pk.weapon,c.pk.stats,c.pk.element,c.pk.route);
+    (c.pk.skills||[]).forEach(function(s){ parts.push(s.name,s.why); });
+  }
+  return parts.filter(Boolean).join('  ');
 }
 CLASSES.forEach(function(c){ c._blob = blobOf(c).toLowerCase(); });
 
 /* 매칭 힌트: 검색어가 걸린 필드/스킬명 요약 */
 function matchHint(c,q){
   var hits=[];
-  var map=[['한줄',c.hook||c.oneLiner],['사냥',c.hunting],['PK',c.pk],['팁',c.tip]];
-  if(c.funding){ map.push(['무과금',c.funding['무과금']],['소과금',c.funding['소과금']],['과금',c.funding['과금']]); }
-  map.forEach(function(m){ if(m[1] && String(m[1]).toLowerCase().indexOf(q)>=0) hits.push(m[0]); });
-  (c.paths||[]).forEach(function(p){
-    if((p.name&&p.name.toLowerCase().indexOf(q)>=0)||(p.weapon&&p.weapon.toLowerCase().indexOf(q)>=0)
-       ||(p.note&&String(p.note).toLowerCase().indexOf(q)>=0)) hits.push('갈래:'+(p.name||p.weapon));
-  });
-  (c.keySkills||[]).forEach(function(s){
-    if((s.name&&s.name.toLowerCase().indexOf(q)>=0)||(s.why&&String(s.why).toLowerCase().indexOf(q)>=0))
-      hits.push('스킬:'+s.name);
-  });
-  return hits.slice(0,4);
+  function has(v){ return v && String(v).toLowerCase().indexOf(q)>=0; }
+  if(c.pve){
+    if(has(c.pve.weapon)) hits.push('무기');
+    if(has(c.pve.stats)) hits.push('스텟');
+    if(has(c.pve.route)) hits.push('사냥터루트');
+    (c.pve.skills||[]).forEach(function(s){ if(has(s.name)||has(s.why)) hits.push('스킬:'+s.name); });
+    (c.pve.zones||[]).forEach(function(z){ if(has(z.name)||has(z.note)) hits.push('사냥터:'+z.name); });
+  }
+  if(c.pk){
+    if(has(c.pk.weapon)) hits.push('PK무기');
+    if(has(c.pk.stats)) hits.push('PK스텟');
+    if(has(c.pk.element)) hits.push('속성');
+    if(has(c.pk.route)) hits.push('쟁터루트');
+    (c.pk.skills||[]).forEach(function(s){ if(has(s.name)||has(s.why)) hits.push('PK스킬:'+s.name); });
+  }
+  if(has(c.confidence)) hits.push('신뢰도');
+  var seen={}, out=[];
+  hits.forEach(function(h){ if(!seen[h]){ seen[h]=1; out.push(h); } });
+  return out.slice(0,4);
 }
 
 /* ---------- 메타 배너 ---------- */
@@ -429,7 +460,7 @@ function cardHTML(c){
     +'<div class="body">'
       +'<div class="kr">'+hl(c.kr)+'</div>'
       +'<div class="tw">'+hl(c.tw||'')+(c.en?' · '+esc(c.en):'')+'</div>'
-      +'<div class="one">'+hl(c.oneLiner||'')+'</div>'
+      +'<div class="one"></div>'
       +'<div class="matchhint-slot"></div>'
     +'</div></div>';
 }
@@ -509,29 +540,64 @@ function openSheet(c){
     +'</div>';
 
   var html='';
-  if(c.hook) html+='<div class="hook">'+hl(c.hook)+'</div>';
-  if(c.paths&&c.paths.length){
-    var ph=c.paths.map(function(p){
-      var chips=[p.weapon,p.range].filter(Boolean).map(function(x){return '<span class="pchip">'+hl(x)+'</span>';}).join('');
-      return '<div class="path"><div class="ph"><b>'+hl(p.name||'')+'</b>'+chips+'</div>'
-        +(p.note?'<div class="pnote">'+hl(p.note)+'</div>':'')+'</div>';
+
+  // 소블록 헬퍼
+  function subBlock(label,content){
+    var mut = isUnknown(content) ? ' mut' : '';
+    return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+      +'<div class="subbody'+mut+'">'+hl(content||'')+'</div></div>';
+  }
+  function skillSub(label,skills){
+    if(!skills||!skills.length){
+      return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+        +'<div class="subbody mut">미확인</div></div>';
+    }
+    var ks=skills.map(function(sk){
+      return '<div class="ks"><b>'+hl(sk.name||'')+'</b><span>'+hl(sk.why||'')+'</span></div>';
     }).join('');
-    html+='<section class="gsec"><h3>무기 갈래</h3><div class="paths">'+ph+'</div></section>';
+    return '<div class="subblk"><div class="sublabel">'+esc(label)+'</div>'
+      +'<div class="kslist">'+ks+'</div></div>';
   }
-  if(c.hunting) html+='<section class="gsec"><h3>사냥은 이렇게</h3><p class="gp">'+hl(c.hunting)+'</p></section>';
-  if(c.pk) html+='<section class="gsec"><h3>PK에선</h3><p class="gp">'+hl(c.pk)+'</p></section>';
-  if(c.funding){
-    var fo=[['무과금','var(--r-ranged)'],['소과금','var(--gold)'],['과금','var(--r-melee)']];
-    var fh=fo.map(function(o){ var v=c.funding[o[0]]; if(!v) return '';
-      return '<div class="fund" style="border-left-color:'+o[1]+'"><div class="fh" style="color:'+o[1]+'">'+o[0]+'</div><div class="fb">'+hl(v)+'</div></div>';
+  function zoneCell(v,cls){
+    var m = isUnknown(v) ? ' mut' : '';
+    return '<td class="'+(cls||'')+m+'">'+hl(v||'')+'</td>';
+  }
+  function zoneTable(zones){
+    if(!zones||!zones.length){
+      return '<div class="subblk"><div class="sublabel">사냥터별 세팅</div>'
+        +'<div class="subbody mut">미확인</div></div>';
+    }
+    var head='<thead><tr><th>사냥터</th><th>권장레벨</th><th>물방</th><th>마방</th><th>리덕</th><th>비고</th></tr></thead>';
+    var rows=zones.map(function(z){
+      return '<tr>'+zoneCell(z.name,'zname')+zoneCell(z.level)+zoneCell(z.phyDef)
+        +zoneCell(z.magDef)+zoneCell(z.reduction)+zoneCell(z.note)+'</tr>';
     }).join('');
-    if(fh) html+='<section class="gsec"><h3>돈 얼마나 쓰냐에 따라</h3><div class="funds">'+fh+'</div></section>';
+    return '<div class="subblk"><div class="sublabel">사냥터별 세팅</div>'
+      +'<div class="ztable-wrap"><table class="ztable">'+head+'<tbody>'+rows+'</tbody></table></div></div>';
   }
-  if(c.keySkills&&c.keySkills.length){
-    var ks=c.keySkills.map(function(s){ return '<div class="ks"><b>'+hl(s.name||'')+'</b><span>'+hl(s.why||'')+'</span></div>'; }).join('');
-    html+='<section class="gsec"><h3>꼭 챙길 스킬</h3><div class="kslist">'+ks+'</div></section>';
-  }
-  if(c.tip) html+='<section class="gsec"><h3>찐 팁</h3><p class="gp">'+hl(c.tip)+'</p></section>';
+
+  // 사냥 (PvE) — 기본 펼침
+  var pve=c.pve||{};
+  var pveHtml='<div class="sec-content-raw">'
+    +subBlock('무기',pve.weapon)
+    +subBlock('스텟',pve.stats)
+    +skillSub('스킬',pve.skills)
+    +subBlock('추천 사냥터 루트',pve.route)
+    +zoneTable(pve.zones)
+    +'</div>';
+  html+=section('⚔','사냥 (PvE)',pveHtml,{raw:true,open:true});
+
+  // 피케이 (PK) — 기본 접힘
+  var pk=c.pk||{};
+  var pkHtml='<div class="sec-content-raw">'
+    +subBlock('무기',pk.weapon)
+    +subBlock('스텟',pk.stats)
+    +skillSub('스킬',pk.skills)
+    +subBlock('속성',pk.element)
+    +subBlock('추천 사냥터·쟁터 루트',pk.route)
+    +'</div>';
+  html+=section('🗡','피케이 (PK)',pkHtml,{raw:true});
+
   if(c.confidence) html+='<div class="conf-note">ⓘ '+hl(c.confidence)+'</div>';
   html+='<details class="sec"><summary><span class="ico">↗</span>출처<span class="arw">▶</span></summary>'
     +sourcesBlock(c.sources)+'</details>';
