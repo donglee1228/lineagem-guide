@@ -271,6 +271,8 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
 /* ===== 각인 시트 ===== */
 #engSheet{position:fixed;inset:0;z-index:70;display:none}
 #engSheet.open{display:block}
+/* 각인 시트는 가로를 더 넓게 활용 (상세 시트는 그대로 820px) */
+#engSheet .sheet-panel{max-width:1040px}
 .eng-head{padding:calc(var(--safe-t) + 16px) 16px 10px;border-bottom:1px solid var(--border);
   background:linear-gradient(180deg,#241f14,var(--bg));flex-shrink:0}
 .eng-head .et{font-size:1.35rem;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:8px}
@@ -299,16 +301,21 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
 .eng-legend .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
 .eng-note{font-size:.75rem;color:var(--gold);background:rgba(201,162,75,.1);
   border:1px solid var(--gold-dim);border-radius:9px;padding:8px 11px;margin-bottom:10px;line-height:1.5}
-.eng-items{display:grid;grid-template-columns:1fr;gap:8px}
-@media(min-width:560px){.eng-items{grid-template-columns:1fr 1fr}}
+/* 가로를 넓게·세로를 짧게: auto-fill 그리드로 한 화면에 더 많이 (모바일 자동 1~2열) */
+.eng-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px;align-content:start}
 .eitem{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border);
-  border-radius:10px;padding:9px 12px}
+  border-radius:9px;padding:6px 10px}
 .eitem.excl{border-left-color:var(--r-melee);border-color:rgba(165,52,47,.55);
   background:linear-gradient(180deg,rgba(165,52,47,.1),var(--card))}
 .eitem.common{border-left-color:var(--r-ranged)}
 .eitem.all13{border-left-color:var(--r-tank)}
-.eitem .en{font-size:.9rem;font-weight:700;color:var(--text);line-height:1.35}
-.eitem .emeta{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center}
+.eitem .en{font-size:.86rem;font-weight:700;color:var(--text);line-height:1.22}
+/* 전체탭 클래스 표기 (전용=딥레드·소수공유=초록·전체공통=옅은 블루) */
+.eanno{font-size:.71rem;line-height:1.25;margin-top:2px;color:var(--muted)}
+.eitem.excl .eanno{color:var(--r-melee);font-weight:800}
+.eitem.common .eanno{color:var(--r-ranged);font-weight:700}
+.eitem.all13 .eanno{color:var(--muted);opacity:.75}
+.eitem .emeta{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;align-items:center}
 .ebadge{font-size:.64rem;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.2px;white-space:nowrap}
 .ebadge.excl{background:var(--r-melee);color:#fff}
 .ebadge.common{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
@@ -451,6 +458,29 @@ var GRADES = (ENG && ENG['등급순서']) || ['일반','상급','빛나는','최
 var SPEC_COLORS = {'근접':'var(--r-melee)','원거리':'var(--r-ranged)','마법':'var(--r-magic)',
   '탱커':'var(--r-tank)','서포터':'var(--r-support)'};
 function specColor(s){ return SPEC_COLORS[s] || 'var(--gold)'; }
+
+/* 전체 탭: 13클래스 통합 집계 (name+slot 기준 중복제거 + 클래스 집합) */
+var ENG_ALL='__ALL__';
+function engClsKr(k){ return (ENG_CLASSES[k] && ENG_CLASSES[k].kr) || k; }
+var _engAggCache={};
+function engAggregate(grade){
+  if(_engAggCache[grade]) return _engAggCache[grade];
+  var map={}, order=[];
+  engClassKeys().forEach(function(k){
+    var arr=(ENG_CLASSES[k]['등급'] && ENG_CLASSES[k]['등급'][grade]) || [];
+    arr.forEach(function(it){
+      var id=(it.name||'')+' '+(it.slot||'');
+      if(!map[id]){ map[id]={name:it.name,slot:it.slot,weaponSpec:it.weaponSpec||'',note:it.note||'',classes:[]}; order.push(id); }
+      var e=map[id];
+      if(e.classes.indexOf(k)<0) e.classes.push(k);
+      if(!e.weaponSpec && it.weaponSpec) e.weaponSpec=it.weaponSpec;
+      if(!e.note && it.note) e.note=it.note;
+    });
+  });
+  var list=order.map(function(id){ return map[id]; });
+  _engAggCache[grade]=list;
+  return list;
+}
 
 /* ---------- 유틸 ---------- */
 function esc(s){ return String(s==null?'':s)
@@ -734,10 +764,33 @@ function engItemCard(it){
     +(it.slot?'<span class="ebadge slot">'+esc(it.slot)+'</span>':'')
     +wspBadge(it.weaponSpec)+'</div></div>';
 }
+/* 전체 탭 집계 카드: 클래스 집합 크기로 색/괄호표기 결정 */
+function engAggCard(a){
+  var n=a.classes.length;
+  var cls='eitem', badge='', anno='';
+  if(n>=13){ cls+=' all13'; badge='<span class="ebadge all13">전체공통 13종</span>';
+    anno='<div class="eanno">전체 공통</div>'; }
+  else if(n===1){ cls+=' excl'; badge='<span class="ebadge excl">전용</span>';
+    anno='<div class="eanno">('+esc(engClsKr(a.classes[0]))+')</div>'; }
+  else{ cls+=' common'; badge='<span class="ebadge common">공유 '+esc(n)+'종</span>';
+    var names=a.classes.map(engClsKr);
+    anno='<div class="eanno">'+(n<=6 ? '('+esc(names.join('·'))+')' : '('+esc(n)+'개 클래스)')+'</div>'; }
+  return '<div class="'+cls+'"><div class="en">'+engHl(a.name)+'</div>'+anno
+    +'<div class="emeta">'+badge
+    +(a.slot?'<span class="ebadge slot">'+esc(a.slot)+'</span>':'')
+    +wspBadge(a.weaponSpec)+'</div></div>';
+}
 function engItemsHtml(){
+  var q=engState.q;
+  if(engState.key===ENG_ALL){
+    var agg=engAggregate(engState.grade)
+      .filter(function(a){ return !q || String(a.name).toLowerCase().indexOf(q)>=0; });
+    if(!agg.length) return '<div class="empty" style="padding:26px">'
+      +(q?'검색 결과가 없어요.':'해당 등급 데이터가 없어요.')+'</div>';
+    return '<div class="eng-items">'+agg.map(engAggCard).join('')+'</div>';
+  }
   var cdata=ENG_CLASSES[engState.key]; if(!cdata) return '';
   var items=(cdata['등급'] && cdata['등급'][engState.grade]) || [];
-  var q=engState.q;
   var filtered=items.filter(function(it){ return !q || String(it.name).toLowerCase().indexOf(q)>=0; });
   if(!filtered.length) return '<div class="empty" style="padding:26px">'
     +(q?'검색 결과가 없어요.':'해당 등급 데이터가 없어요.')+'</div>';
@@ -748,22 +801,31 @@ function reRenderEngItems(){
   if(w) w.innerHTML=engItemsHtml();
 }
 function renderEng(){
-  var key=engState.key, cdata=ENG_CLASSES[key];
-  if(!cdata){ engHead.innerHTML=''; engBody.innerHTML=''; return; }
+  var key=engState.key;
+  var isAll = key===ENG_ALL;
+  var cdata = isAll ? null : ENG_CLASSES[key];
+  if(!isAll && !cdata){ engHead.innerHTML=''; engBody.innerHTML=''; return; }
 
-  // 헤더 + 클래스 선택 탭
-  var tabs=engClassKeys().map(function(k){
-    return '<button class="eng-tab'+(k===key?' active':'')+'" data-eng-key="'+esc(k)+'">'
-      +esc(ENG_CLASSES[k].kr)+'</button>';
-  }).join('');
+  // 헤더 + 클래스 선택 탭 (맨 앞에 "전체")
+  var tabs='<button class="eng-tab'+(isAll?' active':'')+'" data-eng-key="'+ENG_ALL+'">전체</button>'
+    +engClassKeys().map(function(k){
+      return '<button class="eng-tab'+(k===key?' active':'')+'" data-eng-key="'+esc(k)+'">'
+        +esc(ENG_CLASSES[k].kr)+'</button>';
+    }).join('');
   engHead.innerHTML='<div class="et">📦 각인장비상자</div>'
     +'<div class="esub">클래스별 각인상자 드롭 장비 · 전용(강조)/공유 색으로 구분</div>'
     +'<div class="eng-tabs">'+tabs+'</div>';
 
-  // 본문: 선택 클래스 + spec 배지, 등급 탭, 검색, 범례, note, 아이템
-  var specB = cdata.spec
-    ? '<span class="spec-badge" style="background:'+specColor(cdata.spec)+'">'+esc(cdata.spec)+'</span>' : '';
-  var clsHead='<div class="eng-clshead"><span class="cn">'+esc(cdata.kr)+'</span>'+specB+'</div>';
+  // 본문: 선택 클래스(또는 전체) + spec 배지, 등급 탭, 검색, 범례, note, 아이템
+  var clsHead;
+  if(isAll){
+    clsHead='<div class="eng-clshead"><span class="cn">전체</span>'
+      +'<span class="spec-badge" style="background:var(--gold);color:#1a160c">13클래스 통합</span></div>';
+  } else {
+    var specB = cdata.spec
+      ? '<span class="spec-badge" style="background:'+specColor(cdata.spec)+'">'+esc(cdata.spec)+'</span>' : '';
+    clsHead='<div class="eng-clshead"><span class="cn">'+esc(cdata.kr)+'</span>'+specB+'</div>';
+  }
 
   var gt=GRADES.map(function(g){
     return '<button class="grade-tab'+(g===engState.grade?' active':'')+'" data-eng-grade="'+esc(g)+'">'
@@ -779,7 +841,8 @@ function renderEng(){
       +'<span class="ebadge wsp-magic">마</span> 무기 특화</span>'
     +'</div>';
 
-  var items=(cdata['등급'] && cdata['등급'][engState.grade]) || [];
+  var items = isAll ? engAggregate(engState.grade)
+    : ((cdata['등급'] && cdata['등급'][engState.grade]) || []);
   var noteHtml='';
   if(items.length && items[0].note){
     noteHtml='<div class="eng-note">✦ '+esc(items[0].note)+'</div>';
@@ -795,8 +858,8 @@ function renderEng(){
 }
 function openEngSheet(){
   if(!ENG) return;
-  var keys=engClassKeys();
-  if(!engState.key || !ENG_CLASSES[engState.key]) engState.key=keys[0]||null;
+  // 기본은 "전체" 탭
+  if(!engState.key || (engState.key!==ENG_ALL && !ENG_CLASSES[engState.key])) engState.key=ENG_ALL;
   engState.grade='일반'; engState.q='';
   renderEng();
   engSheet.classList.add('open');

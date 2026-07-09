@@ -1,5 +1,5 @@
 /* 리니지M 코덱스 — 서비스워커 (오프라인 캐시) */
-const CACHE_VERSION = 'lineagem-codex-v4';
+const CACHE_VERSION = 'lineagem-codex-v5';
 const CORE_ASSETS = [
   './',
   './index.html',
