@@ -153,7 +153,7 @@ main{max-width:1180px;width:100%;margin:0 auto;padding:8px 12px calc(var(--safe-
 .sheet-head .titles .sub{font-size:.82rem;color:var(--muted);margin-top:2px}
 .sheet-head .titles .rolechip{display:inline-block;margin-top:8px;font-size:.7rem;font-weight:700;
   padding:4px 10px;border-radius:999px;color:#fff}
-#sheetClose,#engClose{position:absolute;top:calc(var(--safe-t) + 10px);right:12px;z-index:5;width:38px;height:38px;
+#sheetClose,#engClose,#bossClose{position:absolute;top:calc(var(--safe-t) + 10px);right:12px;z-index:5;width:38px;height:38px;
   border-radius:50%;border:1px solid var(--border);background:rgba(20,22,28,.7);color:var(--text);
   font-size:1.2rem;line-height:1;display:flex;align-items:center;justify-content:center}
 .sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px calc(var(--safe-b) + 40px);flex:1}
@@ -324,6 +324,92 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
 .ebadge.wsp-melee{background:var(--r-melee);color:#fff}
 .ebadge.wsp-ranged{background:var(--r-ranged);color:#fff}
 .ebadge.wsp-magic{background:var(--r-magic);color:#fff}
+
+/* ===== 보스 위치 특별 카드 ===== */
+.card.boss-card{border:1.5px solid var(--r-tank);
+  background:linear-gradient(180deg,#16222e,#1c2029)}
+.card.boss-card .imgwrap{display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(80% 80% at 50% 42%,#15242f,#141821)}
+.card.boss-card .imgwrap::after{background:none}
+.card.boss-card .boss-emoji{font-size:2.1rem;filter:drop-shadow(0 2px 5px rgba(0,0,0,.55))}
+.card.boss-card .rolechip{background:var(--r-tank);color:#fff}
+.card.boss-card .kr{color:#bcd3e8}
+
+/* ===== 보스 위치 시트 (각인 시트 마크업 재사용) ===== */
+#bossSheet{position:fixed;inset:0;z-index:70;display:none}
+#bossSheet.open{display:block}
+#bossSheet .sheet-panel{max-width:1040px}
+.boss-head{background:linear-gradient(180deg,#16222e,var(--bg))}
+.boss-head .et{color:#bcd3e8}
+.boss-region{width:100%;padding:8px 12px;font-size:.9rem;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none;margin-bottom:8px}
+.boss-region:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,75,.13)}
+.boss-groups{display:flex;flex-direction:column;gap:15px}
+.boss-grouphead{font-size:.82rem;font-weight:800;letter-spacing:.3px;color:var(--gold);
+  display:flex;align-items:center;gap:8px;margin:0 0 7px}
+.boss-grouphead .gcount{font-size:.7rem;color:var(--muted);font-weight:600}
+.boss-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:8px;align-content:start}
+.bitem{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border);
+  border-radius:10px;padding:9px 12px}
+.bitem.g-field_small{border-left-color:var(--muted)}
+.bitem.g-field_named{border-left-color:var(--r-ranged)}
+.bitem.g-dungeon_tower{border-left-color:var(--r-tank)}
+.bitem.g-raid_world{border-left-color:var(--gold)}
+.bitem .bh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:5px}
+.bitem .bname{font-size:.95rem;font-weight:800;color:var(--text)}
+.tbadge{font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.tbadge.g-field_small{background:var(--muted);color:#141821}
+.tbadge.g-field_named{background:var(--r-ranged)}
+.tbadge.g-dungeon_tower{background:var(--r-tank)}
+.tbadge.g-raid_world{background:var(--gold);color:#1a160c}
+.regno{font-size:.64rem;font-weight:800;padding:2px 7px;border-radius:6px;background:var(--card2);
+  border:1px solid var(--border);color:var(--gold)}
+.bmeta{display:flex;flex-direction:column;gap:3px;font-size:.8rem;line-height:1.5}
+.bmeta .brow{display:flex;gap:7px}
+.bmeta .blab{color:var(--muted);flex:none;min-width:36px;font-size:.74rem;font-weight:700}
+.bmeta .bval{color:#dcdad4}
+.bdrops{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.bchip{font-size:.68rem;padding:2px 8px;border-radius:999px;background:var(--card2);
+  border:1px solid var(--border);color:#cfcdc7}
+.bchip.unk{color:var(--muted);font-style:italic;opacity:.7}
+.bnote{font-size:.76rem;color:var(--muted);line-height:1.5;margin-top:6px}
+.bconf{display:inline-block;font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:7px;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted)}
+.bconf.ok{color:var(--r-ranged);border-color:rgba(79,122,85,.5)}
+.bconf.part{color:var(--gold);border-color:var(--gold-dim)}
+.bconf.unk{opacity:.6}
+.bsrc{margin-top:7px}
+.bsrc details>summary{font-size:.7rem;color:var(--muted);cursor:pointer;list-style:none}
+.bsrc details>summary::-webkit-details-marker{display:none}
+.bsrc .sources li{font-size:.7rem}
+
+/* ===== 오리지널 지역 맵 보드 (인벤 워터마크 미사용·자체 데이터 시각화) ===== */
+.map-hint{font-size:.75rem;color:var(--muted);line-height:1.55;margin-bottom:10px;
+  padding:9px 11px;background:var(--card);border:1px solid var(--border);border-radius:9px}
+.map-hint b{color:#bcd3e8}
+.map-legend{display:flex;flex-wrap:wrap;gap:6px 13px;font-size:.68rem;color:var(--muted);
+  background:var(--card);border:1px solid var(--border);border-radius:9px;padding:8px 11px;margin-bottom:10px}
+.map-legend .lg{display:inline-flex;align-items:center;gap:5px}
+.map-legend .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+.map-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;align-content:start}
+.rtile{text-align:left;background:linear-gradient(180deg,var(--card2),var(--card));
+  border:1px solid var(--border);border-top:3px solid var(--border);border-radius:11px;
+  padding:9px 11px;color:var(--text);display:flex;flex-direction:column;gap:4px;
+  transition:transform .1s,border-color .12s,box-shadow .12s}
+.rtile:not(.empty0):active{transform:scale(.97)}
+.rtile:not(.empty0):hover{border-color:#3a4152;box-shadow:var(--shadow)}
+.rtile.top-field_small{border-top-color:var(--muted)}
+.rtile.top-field_named{border-top-color:var(--r-ranged)}
+.rtile.top-dungeon_tower{border-top-color:var(--r-tank)}
+.rtile.top-raid_world{border-top-color:var(--gold)}
+.rtile.empty0{opacity:.4;cursor:default}
+.rtile .rtop{display:flex;align-items:center;gap:6px}
+.rtile .rno{font-size:.62rem;font-weight:800;padding:1px 6px;border-radius:6px;
+  background:var(--card2);border:1px solid var(--border);color:var(--gold)}
+.rtile .rlv{margin-left:auto;font-size:.65rem;color:var(--muted);font-weight:700;white-space:nowrap}
+.rtile .rname{font-size:.85rem;font-weight:800;line-height:1.2}
+.rtile .rbcount{font-size:.7rem;color:#bcd3e8;font-weight:700}
+.rtile.empty0 .rbcount{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -392,8 +478,19 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
   </div>
 </div>
 
+<!-- ===== 보스 위치 전용 시트 ===== -->
+<div id="bossSheet" aria-modal="true" role="dialog">
+  <div class="sheet-bg" data-bclose></div>
+  <div class="sheet-panel">
+    <button id="bossClose" data-bclose aria-label="닫기">✕</button>
+    <div class="eng-head boss-head" id="bossHead"></div>
+    <div class="eng-body" id="bossBody"></div>
+  </div>
+</div>
+
 <script src="데이터.js"></script>
 <script src="각인상자.js"></script>
+<script src="보스.js"></script>
 <script>
 (function(){
 "use strict";
@@ -481,6 +578,38 @@ function engAggregate(grade){
   _engAggCache[grade]=list;
   return list;
 }
+
+/* ---------- 보스 위치 데이터 ---------- */
+var BOSS = window.LM_BOSS || null;
+var BOSS_LIST = (BOSS && BOSS.bosses) || [];
+var BOSS_REGIONS = (BOSS && BOSS.regions) || [];
+var BOSS_META = (BOSS && BOSS.meta) || {};
+var G_LABEL = BOSS_META.groupLabel ||
+  {field_small:'자잘',field_named:'필드네임드',dungeon_tower:'던전·탑',raid_world:'레이드·월드·드래곤'};
+var G_ORDER = BOSS_META.groupOrder || ['field_small','field_named','dungeon_tower','raid_world'];
+var G_PRIO = {field_small:1, field_named:2, dungeon_tower:3, raid_world:4};
+var BOSS_TABS = [
+  {key:'map', label:'🗺 지역맵', groups:null},
+  {key:'all', label:'전체', groups:null},
+  {key:'field', label:'자잘·필드', groups:['field_small','field_named']},
+  {key:'dungeon', label:'던전·탑', groups:['dungeon_tower']},
+  {key:'raid', label:'레이드·월드', groups:['raid_world']}
+];
+
+/* 지역명 정규화 — 슬래시 앞 기준 + 괄호/꼬리말 제거 (지역맵↔보스 링크·드롭다운 중복 정리) */
+var REGION_BY_NO = {};
+BOSS_REGIONS.forEach(function(r){ if(r.regionNo) REGION_BY_NO[r.regionNo]=r.region; });
+function normReg(s){
+  s = String(s==null?'':s).split('/')[0];
+  s = s.replace(/\(.*?\)/g,' ').replace(/\s*(주변|권역|근처|일대)\s*$/,'');
+  return s.replace(/\s+/g,' ').trim();
+}
+function canonKey(regionStr, regionNo){
+  if(regionNo && REGION_BY_NO[regionNo]) regionStr = REGION_BY_NO[regionNo];
+  return normReg(regionStr);
+}
+function bossRegionKey(b){ return canonKey(b.region, b.regionNo); }
+function lvNum(s){ var m=String(s==null?'':s).match(/\d+/); return m?parseInt(m[0],10):999; }
 
 /* ---------- 유틸 ---------- */
 function esc(s){ return String(s==null?'':s)
@@ -605,10 +734,19 @@ function engCardHTML(){
     +'<div class="body"><div class="kr">각인장비상자</div>'
       +'<div class="matchhint-slot"></div></div></div>';
 }
+/* 15번째 특별 카드 — 보스 위치 (필터/검색 무관 항상 표시) */
+function bossCardHTML(){
+  if(!BOSS) return '';
+  return '<div class="card boss-card" data-boss-card="1">'
+    +'<div class="imgwrap"><span class="rolechip">특별</span>'
+      +'<span class="boss-emoji">🗺️</span></div>'
+    +'<div class="body"><div class="kr">보스 위치</div>'
+      +'<div class="matchhint-slot"></div></div></div>';
+}
 function render(){
   var q=curQuery.toLowerCase().trim();
   var shown=0;
-  grid.innerHTML=CLASSES.map(cardHTML).join('') + engCardHTML();
+  grid.innerHTML=CLASSES.map(cardHTML).join('') + engCardHTML() + bossCardHTML();
   CLASSES.forEach(function(c){
     var el=grid.querySelector('.card[data-key="'+cssEsc(c.key)+'"]');
     if(!el) return;
@@ -627,6 +765,8 @@ function render(){
   });
   var ec=grid.querySelector('.eng-card');
   if(ec) ec.addEventListener('click', openEngSheet);
+  var bc=grid.querySelector('.boss-card');
+  if(bc) bc.addEventListener('click', openBossSheet);
   emptyEl.style.display = shown? 'none':'block';
 }
 function cssEsc(s){ return String(s).replace(/["\\]/g,'\\$&'); }
@@ -882,6 +1022,186 @@ engBody.addEventListener('input',function(e){
   }
 });
 
+/* ---------- 보스 위치 시트 ---------- */
+var bossSheet=document.getElementById('bossSheet');
+var bossHead=document.getElementById('bossHead');
+var bossBody=document.getElementById('bossBody');
+var bossState={ tab:'all', region:'', q:'' };
+
+function bossHl(text){
+  var t=esc(text), q=bossState.q;
+  if(!q) return t;
+  try{ return t.replace(new RegExp('('+reEsc(q)+')','gi'),'<mark>$1</mark>'); }
+  catch(e){ return t; }
+}
+function bossConfClass(c){
+  var s=String(c||'');
+  if(/^확인/.test(s)) return 'ok';
+  if(/^부분/.test(s)) return 'part';
+  return 'unk';
+}
+function bossActiveGroups(){
+  for(var i=0;i<BOSS_TABS.length;i++){ if(BOSS_TABS[i].key===bossState.tab) return BOSS_TABS[i].groups||G_ORDER; }
+  return G_ORDER;
+}
+function bossMatch(b){
+  var q=bossState.q;
+  if(!q) return true;
+  var blob=[b.name,b.region,b.map,b.location,b.note].concat(b.drops||[]).join('  ').toLowerCase();
+  return blob.indexOf(q)>=0;
+}
+function bossFiltered(){
+  var groups=bossActiveGroups();
+  return BOSS_LIST.filter(function(b){
+    if(groups.indexOf(b.groupKey)<0) return false;
+    if(bossState.region && bossRegionKey(b)!==bossState.region) return false;
+    return bossMatch(b);
+  });
+}
+function bossRegionOptions(){
+  var seen={}, arr=[];
+  BOSS_LIST.forEach(function(b){ var k=bossRegionKey(b); if(k && !seen[k]){ seen[k]=1; arr.push(k); } });
+  arr.sort(function(a,b){ return a.localeCompare(b,'ko'); });
+  return arr;
+}
+/* 오리지널 지역 맵 보드 — regions[]로 지역 타일 그리드 (레벨 오름차순·보스수·최상위 tier색) */
+function mapBoardHTML(){
+  var counts={}, top={};
+  BOSS_LIST.forEach(function(b){
+    var k=bossRegionKey(b);
+    counts[k]=(counts[k]||0)+1;
+    if(!top[k] || (G_PRIO[b.groupKey]||0)>(G_PRIO[top[k]]||0)) top[k]=b.groupKey;
+  });
+  var regions=BOSS_REGIONS.filter(function(r){ return r.hasBoss; })
+    .slice().sort(function(a,b){ return lvNum(a.levelRange)-lvNum(b.levelRange); });
+  var tiles=regions.map(function(r){
+    var k=canonKey(r.region, r.regionNo);
+    var n=counts[k]||0;
+    var tg=top[k]||'field_named';
+    var cls='rtile top-'+tg+(n===0?' empty0':'');
+    var attr=n>0?' data-region-key="'+esc(k)+'"':'';
+    return '<button class="'+cls+'"'+attr+'>'
+      +'<div class="rtop">'+(r.regionNo?'<span class="rno">#'+esc(r.regionNo)+'</span>':'')
+        +'<span class="rlv">Lv '+esc(r.levelRange||'?')+'</span></div>'
+      +'<div class="rname">'+esc(r.region)+'</div>'
+      +'<div class="rbcount">'+(n>0?('보스 '+n+'종'):'보스 정보 없음')+'</div>'
+      +'</button>';
+  }).join('');
+  var legend='<div class="map-legend">'
+    +'<span class="lg"><span class="sw" style="background:var(--muted)"></span>자잘</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--r-ranged)"></span>필드네임드</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--r-tank)"></span>던전·탑</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--gold)"></span>레이드·월드</span>'
+    +'</div>';
+  return '<div class="map-hint">🗺️ <b>지역 타일</b>을 누르면 그 지역 보스로 바로 이동해요. '
+    +'왼쪽 위 <b>#번호</b>는 게임 내 지역 맵 번호, <b>윗 색 띠</b>는 그 지역 최상위 보스 등급이에요. '
+    +'저레벨 → 고레벨 순으로 배치했어요. (인벤 워터마크 이미지 대신 자체 데이터로 그린 오리지널 맵)</div>'
+    +legend
+    +'<div class="map-board">'+tiles+'</div>';
+}
+function bossItemHTML(b){
+  var g=b.groupKey;
+  var drops=(b.drops||[]);
+  var dropsHtml = drops.length ? '<div class="bdrops">'+drops.map(function(d){
+      var unk=/^미확인/.test(d)?' unk':'';
+      return '<span class="bchip'+unk+'">'+bossHl(d)+'</span>';
+    }).join('')+'</div>' : '';
+  var loc=[b.map,b.location].filter(function(x){ return x && !/^미확인$/.test(String(x).trim()); }).join(' · ');
+  var srcHtml=(b.sources&&b.sources.length)
+    ? '<div class="bsrc"><details><summary>↗ 출처 '+b.sources.length+'건</summary>'
+      +'<ul class="sources" style="margin-top:6px">'+b.sources.map(function(u){
+        return '<li><a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(u)+'</a></li>';
+      }).join('')+'</ul></details></div>' : '';
+  return '<div class="bitem g-'+g+'">'
+    +'<div class="bh"><span class="bname">'+bossHl(b.name)+'</span>'
+      +(b.regionNo?'<span class="regno">#'+esc(b.regionNo)+'</span>':'')
+      +'<span class="tbadge g-'+g+'">'+esc(G_LABEL[g]||'')+'</span></div>'
+    +'<div class="bmeta">'
+      +'<div class="brow"><span class="blab">지역</span><span class="bval">'+bossHl(b.region||'미확인')+'</span></div>'
+      +(loc?'<div class="brow"><span class="blab">위치</span><span class="bval">'+bossHl(loc)+'</span></div>':'')
+      +'<div class="brow"><span class="blab">레벨</span><span class="bval">'+bossHl(b.level==null?'미확인':String(b.level))+'</span></div>'
+      +'<div class="brow"><span class="blab">리젠</span><span class="bval">'+bossHl(b.respawn||'미확인')+'</span></div>'
+    +'</div>'
+    +dropsHtml
+    +(b.note?'<div class="bnote">'+bossHl(b.note)+'</div>':'')
+    +'<span class="bconf '+bossConfClass(b.confidence)+'">'+esc(b.confidence||'미확인')+'</span>'
+    +srcHtml
+    +'</div>';
+}
+function bossListHTML(){
+  var list=bossFiltered();
+  if(!list.length){
+    return '<div class="empty" style="padding:30px">'
+      +((bossState.q||bossState.region)?'조건에 맞는 보스가 없어요.':'보스 데이터가 없어요.')+'</div>';
+  }
+  var groups=bossActiveGroups();
+  if(groups.length>1){
+    var html='<div class="boss-groups">';
+    groups.forEach(function(g){
+      var items=list.filter(function(b){ return b.groupKey===g; });
+      if(!items.length) return;
+      html+='<div><div class="boss-grouphead">'+esc(G_LABEL[g])
+        +'<span class="gcount">'+items.length+'종</span></div>'
+        +'<div class="boss-list">'+items.map(bossItemHTML).join('')+'</div></div>';
+    });
+    return html+'</div>';
+  }
+  return '<div class="boss-list">'+list.map(bossItemHTML).join('')+'</div>';
+}
+function reRenderBossList(){ var w=document.getElementById('bossListWrap'); if(w) w.innerHTML=bossListHTML(); }
+function renderBoss(){
+  var tabs=BOSS_TABS.map(function(t){
+    return '<button class="eng-tab'+(t.key===bossState.tab?' active':'')+'" data-boss-tab="'+esc(t.key)+'">'
+      +esc(t.label)+'</button>';
+  }).join('');
+  bossHead.innerHTML='<div class="et">🗺️ 보스 위치</div>'
+    +'<div class="esub">한국 본서버 필드·던전/탑·레이드/월드 보스 위치·리젠·드랍 · 총 '+BOSS_LIST.length+'종 · 미확인 정직표기</div>'
+    +'<div class="eng-tabs">'+tabs+'</div>';
+  if(bossState.tab==='map'){
+    bossBody.innerHTML=mapBoardHTML();
+    bossBody.scrollTop=0;
+    return;
+  }
+  var opts='<option value="">📍 전체 지역</option>'+bossRegionOptions().map(function(r){
+    return '<option value="'+esc(r)+'"'+(r===bossState.region?' selected':'')+'>'+esc(r)+'</option>';
+  }).join('');
+  var legend='<div class="eng-legend">'
+    +'<span class="lg"><span class="sw" style="background:var(--r-ranged)"></span>필드네임드</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--r-tank)"></span>던전·탑</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--gold)"></span>레이드·월드·드래곤</span>'
+    +'</div>';
+  bossBody.innerHTML=
+    '<select class="boss-region" id="bossRegion">'+opts+'</select>'
+    +'<input class="eng-search" id="bossSearch" type="search" autocomplete="off" '
+      +'placeholder="보스명·지역·드랍 검색…" value="'+esc(bossState.q)+'" />'
+    +legend
+    +'<div id="bossListWrap">'+bossListHTML()+'</div>';
+  bossBody.scrollTop=0;
+}
+function openBossSheet(){
+  if(!BOSS) return;
+  bossState={ tab:'map', region:'', q:'' };
+  renderBoss();
+  bossSheet.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeBossSheet(){ bossSheet.classList.remove('open'); document.body.style.overflow=''; }
+bossSheet.addEventListener('click',function(e){ if(e.target.hasAttribute('data-bclose')) closeBossSheet(); });
+bossHead.addEventListener('click',function(e){
+  var t=e.target.closest('[data-boss-tab]');
+  if(t){ bossState.tab=t.getAttribute('data-boss-tab'); renderBoss(); }
+});
+bossBody.addEventListener('click',function(e){
+  var tile=e.target.closest('[data-region-key]');
+  if(tile){ bossState.region=tile.getAttribute('data-region-key'); bossState.tab='all'; bossState.q=''; renderBoss(); }
+});
+bossBody.addEventListener('change',function(e){
+  if(e.target.id==='bossRegion'){ bossState.region=e.target.value; reRenderBossList(); }
+});
+bossBody.addEventListener('input',function(e){
+  if(e.target.id==='bossSearch'){ bossState.q=e.target.value.toLowerCase().trim(); reRenderBossList(); }
+});
+
 /* ---------- 검색 ---------- */
 var searchEl=document.getElementById('search');
 var clearBtn=document.getElementById('clearBtn');
@@ -901,7 +1221,8 @@ document.addEventListener('keydown',function(e){
     e.preventDefault();
     searchEl.focus(); searchEl.select();
   } else if(k==='escape'){
-    if(engSheet.classList.contains('open')){ closeEngSheet(); }
+    if(bossSheet.classList.contains('open')){ closeBossSheet(); }
+    else if(engSheet.classList.contains('open')){ closeEngSheet(); }
     else if(sheet.classList.contains('open')){ closeSheet(); }
     else if(document.activeElement===searchEl && searchEl.value){ searchEl.value=''; onSearch(); }
     else if(searchEl.value){ searchEl.value=''; onSearch(); }

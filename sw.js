@@ -1,10 +1,11 @@
 /* 리니지M 코덱스 — 서비스워커 (오프라인 캐시) */
-const CACHE_VERSION = 'lineagem-codex-v5';
+const CACHE_VERSION = 'lineagem-codex-v7';
 const CORE_ASSETS = [
   './',
   './index.html',
   './데이터.js',
   './각인상자.js',
+  './보스.js',
   './manifest.webmanifest',
   './assets/icon-192.png',
   './assets/icon-512.png',
