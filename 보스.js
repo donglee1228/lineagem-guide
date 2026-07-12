@@ -1,10 +1,10 @@
 window.LM_BOSS = {
   "meta": {
     "note": "리니지M 한국 본서버 보스 위치·리젠 정리. 필드네임드·던전/탑·레이드/월드/드래곤 통합. 리젠/드랍/레벨은 업데이트로 자주 변동 → confidence(확인/부분확인/미확인) 정직표기.",
-    "updated": "2026-07-12",
+    "updated": "2026-07-13",
     "server": "리니지M 한국 본서버",
     "count": 54,
-    "regionCount": 24,
+    "regionCount": 29,
     "groupOrder": [
       "field_small",
       "field_named",
@@ -28,7 +28,15 @@ window.LM_BOSS = {
       "field_named": 28,
       "dungeon_tower": 19,
       "raid_world": 4
-    }
+    },
+    "anchorRegions": [
+      "글루디오",
+      "켄트",
+      "오렌",
+      "하이네",
+      "아덴"
+    ],
+    "mapNote": "지역맵은 실제 배치를 참고해 직접 그린 도식(오리지널) 지도이며 좌표는 근사치입니다. 인벤/NC 등 타사 지도 이미지는 사용하지 않았습니다."
   },
   "regions": [
     {
@@ -42,7 +50,16 @@ window.LM_BOSS = {
         "https://namu.wiki/w/리니지M/지역",
         "https://lineagem.plaync.com/board/knowhow/view?articleId=5954ed3491196a0001713f67",
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 13,
+      "y": 20,
+      "neighbors": [
+        "검은 기사단 선착장",
+        "글루디오"
+      ],
+      "coastal": true,
+      "mapNote": "본토(아덴 대륙)에서 떨어진 북서쪽 앞바다의 독립 섬. 배(선착장)로 글루딘 항구로 이동해 본토 진입. 초보 시작 지역.",
+      "posConfidence": "확인"
     },
     {
       "region": "검은 기사단 선착장",
@@ -53,7 +70,16 @@ window.LM_BOSS = {
       "note": "맵 번호 08. 보스 커즈(Kurtz) Lv.39 젠 지역. 커즈 세트 아이템/희귀 비법서 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 17,
+      "y": 30,
+      "neighbors": [
+        "말하는 섬",
+        "글루디오"
+      ],
+      "coastal": true,
+      "mapNote": "말하는 섬 권역의 선착장(해안 도크). 커즈(Kurtz Lv.39) 젠. 섬↔본토 항로 연결점.",
+      "posConfidence": "확인"
     },
     {
       "region": "기란 마을",
@@ -64,7 +90,20 @@ window.LM_BOSS = {
       "note": "아덴 대륙 중심 마을. 광장 근처 '마법사 멀린'을 통해 기란 감옥으로 텔레포트. 초중반 거점.",
       "sources": [
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=181683"
-      ]
+      ],
+      "x": 47,
+      "y": 48,
+      "neighbors": [
+        "켄트",
+        "기란 감옥 던전",
+        "사이클롭스 소굴",
+        "마법사의 연구실",
+        "용의 계곡 / 용의 던전",
+        "하이네"
+      ],
+      "coastal": false,
+      "mapNote": "[지도 기준점] 아덴 대륙 중앙 허브 마을. 글루디오·켄트와 연결돼 사냥터 범위가 가장 넓음. 근처에 용의계곡·용의던전·기란던전·다크엘프밭·싸이(사이클롭스)밭. 하이네와도 직접 연결.",
+      "posConfidence": "확인"
     },
     {
       "region": "기란 감옥 던전",
@@ -75,7 +114,16 @@ window.LM_BOSS = {
       "note": "맵 번호 04. 기란 감옥 던전 1~4층. 보스=파우스트(두목 클라인) 젠(젠주기 약 1h). 유니크 무기 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 50,
+      "y": 53,
+      "neighbors": [
+        "기란 마을",
+        "사이클롭스 소굴"
+      ],
+      "coastal": false,
+      "mapNote": "기란 마을 지하/인접 감옥 던전 1~4층. 파우스트(두목 클라인) 젠. 중앙 기란 권역.",
+      "posConfidence": "확인"
     },
     {
       "region": "사이클롭스 소굴",
@@ -86,7 +134,17 @@ window.LM_BOSS = {
       "note": "기란 마을에서 우측으로 1~2분. 사이클롭스/다크엘프/임프 장로 3종 주류. 퀘스트 사냥터.",
       "sources": [
         "https://lineagem.inven.co.kr/dataninfo/guide/"
-      ]
+      ],
+      "x": 54,
+      "y": 46,
+      "neighbors": [
+        "기란 마을",
+        "기란 감옥 던전",
+        "마법사의 연구실"
+      ],
+      "coastal": false,
+      "mapNote": "기란 마을에서 우측(동)으로 1~2분. 사이클롭스·다크엘프·임프 장로. 중앙 기란 동측 필드.",
+      "posConfidence": "추정"
     },
     {
       "region": "산적 소굴",
@@ -98,7 +156,16 @@ window.LM_BOSS = {
       "sources": [
         "https://lineagem.inven.co.kr/dataninfo/guide/",
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 38,
+      "y": 40,
+      "neighbors": [
+        "켄트",
+        "글루디오"
+      ],
+      "coastal": false,
+      "mapNote": "웰던 마을 동쪽, 텔레포트 지역 근처. 켄트~글루디오 사이 중부. 산적 두목 젠.",
+      "posConfidence": "추정"
     },
     {
       "region": "요정 숲 마을",
@@ -109,7 +176,16 @@ window.LM_BOSS = {
       "note": "맵 번호 06. 보스=리칸트(Licant) Lv.47, 요정 숲 마을에서 5시(오른쪽) 방향 젠(젠주기 약 8h/멍). 사일런스 소드 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 28,
+      "y": 58,
+      "neighbors": [
+        "글루디오",
+        "개미 굴 (개미굴 입구)"
+      ],
+      "coastal": false,
+      "mapNote": "글루디오 남서쪽 요정 숲 권역(엘프 지역). 숲 지형. 리칸트 Lv.47 5시 방향 젠.",
+      "posConfidence": "확인"
     },
     {
       "region": "마법사의 연구실",
@@ -120,7 +196,17 @@ window.LM_BOSS = {
       "note": "맵 번호 12. 4대 원소 보스 카스파/메르키오르/발터자르/세마(Lv.43~45) 젠. 연구실에서 위로 쭉 이동(젠주기 약 2h). 정령/원소 가죽 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 42,
+      "y": 42,
+      "neighbors": [
+        "기란 마을",
+        "사이클롭스 소굴",
+        "망자의 무덤"
+      ],
+      "coastal": false,
+      "mapNote": "중앙 권역. 4대 원소 보스(카스파/메르키오르/발터자르/세마) 젠. 연구실에서 위(북)로 이동.",
+      "posConfidence": "추정"
     },
     {
       "region": "오크 숲 / 오크 부락 / 오크 성벽",
@@ -131,7 +217,15 @@ window.LM_BOSS = {
       "note": "맵 번호 40~43 권역. 보스=가스트 로드(Lv.43, 40번 오크 부락 북동쪽 오크 성벽 주변, 젠 3h/멍)와 스피리드(Lv.45, 41번 오크 숲 벌목지대 주변, 젠 3h). 오리하르콘 플레이트 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 40,
+      "y": 16,
+      "neighbors": [
+        "켄트"
+      ],
+      "coastal": false,
+      "mapNote": "대륙 북부 오크 세력권(부락·벌목지대·성벽). 켄트 위쪽 북방. 가스트 로드 Lv.43, 스피리드 Lv.45.",
+      "posConfidence": "확인"
     },
     {
       "region": "개미 굴 (개미굴 입구)",
@@ -142,7 +236,17 @@ window.LM_BOSS = {
       "note": "맵 번호 68(1번). 보스=거대 수호 개미 Lv.45, 개미 굴 입구 4층 2구역 젠(젠주기 약 3.5h). 스피릿 링 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 30,
+      "y": 54,
+      "neighbors": [
+        "글루디오",
+        "죽음의 폐허 / 카오틱 신전",
+        "요정 숲 마을"
+      ],
+      "coastal": false,
+      "mapNote": "글루디오 남쪽 개미굴 입구 4층 던전. 거대 수호 개미 Lv.45. 서중부 지하 던전.",
+      "posConfidence": "확인"
     },
     {
       "region": "망자의 무덤",
@@ -153,7 +257,17 @@ window.LM_BOSS = {
       "note": "맵 번호 23(18번). 보스 2종: 네크로맨서 Lv.46(젠 홀수시 1,3,5,7,9,11시/멍), 데스나이트 Lv.48(젠 약 7h/멍). 데스나이트 세트 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 60,
+      "y": 44,
+      "neighbors": [
+        "마법사의 연구실",
+        "오렌",
+        "거울의 숲"
+      ],
+      "coastal": false,
+      "mapNote": "기란과 오렌 사이 중동부 통로/무덤(데스패스 계열). 네크로맨서 Lv.46·데스나이트 Lv.48.",
+      "posConfidence": "추정"
     },
     {
       "region": "은기사 마을",
@@ -164,7 +278,17 @@ window.LM_BOSS = {
       "note": "맵 번호 53(58번). 보스=아르피어(Arpia) Lv.50, 은기사 마을 북쪽 숲 12시 방향 젠(젠주기 약 4h). 윈드 브레스 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 52,
+      "y": 64,
+      "neighbors": [
+        "아덴",
+        "하이네",
+        "거울의 숲"
+      ],
+      "coastal": false,
+      "mapNote": "아덴 인근 중남부 마을. 우측(동)으로 이동하면 하이네 필드로 연결. 아르피어 Lv.50 북쪽 숲 12시.",
+      "posConfidence": "확인"
     },
     {
       "region": "죽음의 폐허 / 카오틱 신전",
@@ -175,7 +299,16 @@ window.LM_BOSS = {
       "note": "맵 번호 59(60번). 보스=바포메트(Baphomet) Lv.35, 죽음의 폐허/카오틱 신전 젠. 젠 시간이 고정형(오후 2:20~30, 오후 8:00~30). 바포메트 아머/희귀 비법서 드랍.",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 30,
+      "y": 48,
+      "neighbors": [
+        "글루디오",
+        "개미 굴 (개미굴 입구)"
+      ],
+      "coastal": false,
+      "mapNote": "글루디오 부근 서부(카오틱 신전=버그밭 인근). 바포메트 Lv.35 고정 젠.",
+      "posConfidence": "추정"
     },
     {
       "region": "에바왕국 던전",
@@ -186,7 +319,16 @@ window.LM_BOSS = {
       "note": "맵 번호 21(37번). 보스=자이언트 웜(Giant Worm) Lv.69, 에바왕국 던전 4층 난파선 주위 젠(젠주기 약 2h/멍).",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 62,
+      "y": 80,
+      "neighbors": [
+        "하이네",
+        "로서스 섬"
+      ],
+      "coastal": true,
+      "mapNote": "하이네(항구)에서 이어지는 남부 수중/해안 왕국 던전. 4층 난파선. 자이언트 웜 Lv.69.",
+      "posConfidence": "추정"
     },
     {
       "region": "거울의 숲",
@@ -197,7 +339,18 @@ window.LM_BOSS = {
       "note": "맵 번호 54(2번). 보스=도펠겡어(Doppelganger) 보스 Lv.65, 거울의 숲 5시 방향 지역 숲 젠(젠주기 약 7h/멍).",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 66,
+      "y": 54,
+      "neighbors": [
+        "오렌",
+        "망자의 무덤",
+        "상아탑",
+        "은기사 마을"
+      ],
+      "coastal": false,
+      "mapNote": "동부 숲 지형. 도펠겡어 보스 Lv.65 5시 방향. 오렌~은기사 사이 동측.",
+      "posConfidence": "추정"
     },
     {
       "region": "로서스 섬",
@@ -208,7 +361,16 @@ window.LM_BOSS = {
       "note": "맵 번호 56(15번). 보스=자이언트 크로커다일 Lv.73, 로서스 섬 젠(젠주기 약 3h).",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 76,
+      "y": 82,
+      "neighbors": [
+        "에바왕국 던전",
+        "하이네"
+      ],
+      "coastal": true,
+      "mapNote": "남동쪽 앞바다의 섬. 자이언트 크로커다일 Lv.73(습지/해안). 섬 지형.",
+      "posConfidence": "추정"
     },
     {
       "region": "용의 계곡 / 용의 던전",
@@ -220,7 +382,17 @@ window.LM_BOSS = {
       "sources": [
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=182978",
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 54,
+      "y": 30,
+      "neighbors": [
+        "기란 마을",
+        "화룡의 둥지 / 화염의 둥지",
+        "오렌"
+      ],
+      "coastal": false,
+      "mapNote": "기란 북동쪽 산악 고레벨 계곡(드레이크 다수·대흑장로·거대 드레이크 Lv.77). 험준한 용뼈 지형.",
+      "posConfidence": "확인"
     },
     {
       "region": "화룡의 둥지 / 화염의 둥지",
@@ -231,7 +403,16 @@ window.LM_BOSS = {
       "note": "맵 번호 33(72번). 고레벨 보스 밀집: 이프리트(Ifrit) Lv.77(화룡의 둥지 11시 방향, 젠 2h/멍), 피닉스(Phoenix) Lv.84(화염의 둥지 12시 방향, 젠 7h/멍).",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 60,
+      "y": 22,
+      "neighbors": [
+        "용의 계곡 / 용의 던전",
+        "오렌 설벽"
+      ],
+      "coastal": false,
+      "mapNote": "용의 계곡 너머 북동부 화산/용암 둥지. 이프리트 Lv.77·피닉스 Lv.84. 화염 지형 고레벨.",
+      "posConfidence": "추정"
     },
     {
       "region": "오렌 설벽 (설벽)",
@@ -242,7 +423,17 @@ window.LM_BOSS = {
       "note": "맵 번호 36(29번). 보스=큰 발의 마요(마요) Lv.80, 오렌 설벽 12시 방향 젠(젠주기 약 3h/멍).",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 68,
+      "y": 16,
+      "neighbors": [
+        "오렌",
+        "화룡의 둥지 / 화염의 둥지",
+        "엘모어 전초기지 / 격전지"
+      ],
+      "coastal": false,
+      "mapNote": "오렌 북쪽 설원/설벽(엘모어 방면 북방 눈 지형). 큰 발의 마요 Lv.80 12시 방향.",
+      "posConfidence": "확인"
     },
     {
       "region": "상아탑",
@@ -254,7 +445,17 @@ window.LM_BOSS = {
       "sources": [
         "https://www.gamechosun.co.kr/webzine/article/view.php?no=143551",
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=184193"
-      ]
+      ],
+      "x": 72,
+      "y": 32,
+      "neighbors": [
+        "오렌",
+        "거울의 숲",
+        "오만과 신념의 탑"
+      ],
+      "coastal": false,
+      "mapNote": "오렌의 마법탑(7층). 동부 오렌 지방. 감시자 데몬 7층. 상대적 저난이도 고효율 던전.",
+      "posConfidence": "확인"
     },
     {
       "region": "오만과 신념의 탑 (오만의 탑)",
@@ -266,7 +467,17 @@ window.LM_BOSS = {
       "sources": [
         "https://lineagem.plaync.com/guidebook/view?title=오만과+신념의+탑",
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=185439"
-      ]
+      ],
+      "x": 82,
+      "y": 42,
+      "neighbors": [
+        "상아탑",
+        "오렌",
+        "흑기사 전투기지"
+      ],
+      "coastal": false,
+      "mapNote": "대륙 동편의 고탑. 오렌/상아탑 동쪽. 층별 사냥터(1~3층 인기).",
+      "posConfidence": "확인"
     },
     {
       "region": "엘모어 전초기지 / 격전지",
@@ -277,7 +488,16 @@ window.LM_BOSS = {
       "note": "맵 번호 38~39. 보스: 광풍/질풍의 샤스키(38번 엘모어 전초기지/격전지), 빨샤(38번 엘모어 격전지에서 밑으로, 젠 2h/멍), 녹샤(39번 엘모어 전초기지, 젠 2h/멍).",
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
-      ]
+      ],
+      "x": 74,
+      "y": 20,
+      "neighbors": [
+        "오렌 설벽",
+        "황혼 산맥"
+      ],
+      "coastal": false,
+      "mapNote": "북동부 엘모어 지방 전초기지/격전지. 샤스키(광풍/질풍/빨샤/녹샤) 젠. 설원~산악 접경 고레벨.",
+      "posConfidence": "추정"
     },
     {
       "region": "황혼 산맥",
@@ -288,7 +508,16 @@ window.LM_BOSS = {
       "note": "맵 번호 74. 보스=에인션트 자이언트(Ancient Giant), 황혼 산맥 젠(젠주기 약 5h/멍).",
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/14983"
-      ]
+      ],
+      "x": 80,
+      "y": 24,
+      "neighbors": [
+        "엘모어 전초기지 / 격전지",
+        "흑기사 전투기지"
+      ],
+      "coastal": false,
+      "mapNote": "북동 외곽 산맥 고레벨. 에인션트 자이언트. 험준 산악 지형.",
+      "posConfidence": "추정"
     },
     {
       "region": "흑기사 전투기지",
@@ -299,6 +528,131 @@ window.LM_BOSS = {
       "note": "맵 번호 75. 고레벨 보스 밀집: 암흑대장로 / 베리스 / 케레니스, 흑기사 전투기지 젠(젠주기 약 3h/멍).",
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/14983"
+      ],
+      "x": 86,
+      "y": 32,
+      "neighbors": [
+        "황혼 산맥",
+        "오만과 신념의 탑"
+      ],
+      "coastal": false,
+      "mapNote": "동부 최외곽 고레벨 전투기지. 암흑대장로/베리스/케레니스 밀집. 최상위 사냥터.",
+      "posConfidence": "추정"
+    },
+    {
+      "region": "글루디오",
+      "continent": "아덴 대륙 (서부)",
+      "levelRange": "10~30",
+      "hasBoss": false,
+      "regionNo": null,
+      "note": "[지도 기준점] 말하는 섬을 벗어나 진입하는 본토 서부 관문 마을(글루딘 항구=서해안). 북쪽 골밭, 동쪽 흑기사밭, 동북 장로밭, 카오틱신전 부근 버그밭. 켄트·기란으로 연결.",
+      "mapNote": "[지도 기준점] 말하는 섬을 벗어나 진입하는 본토 서부 관문 마을(글루딘 항구=서해안). 북쪽 골밭, 동쪽 흑기사밭, 동북 장로밭, 카오틱신전 부근 버그밭. 켄트·기란으로 연결.",
+      "x": 24,
+      "y": 46,
+      "neighbors": [
+        "말하는 섬",
+        "검은 기사단 선착장",
+        "켄트",
+        "죽음의 폐허 / 카오틱 신전",
+        "개미 굴 (개미굴 입구)",
+        "요정 숲 마을"
+      ],
+      "coastal": true,
+      "posConfidence": "확인",
+      "sources": [
+        "https://www.inven.co.kr/webzine/news/?news=303626&site=lineagem",
+        "https://www.khgames.co.kr/news/articleView.html?idxno=6707"
+      ]
+    },
+    {
+      "region": "켄트",
+      "continent": "아덴 대륙 (서북부)",
+      "levelRange": "15~30",
+      "hasBoss": false,
+      "regionNo": null,
+      "note": "[지도 기준점] 글루디오 영지 근처(북쪽)의 마을. 펫 사냥 초보 거점. 아래쪽 난쟁이·장로 사냥터, 11시 방향 오우거 밭. 북쪽으로 오크 지역.",
+      "mapNote": "[지도 기준점] 글루디오 영지 근처(북쪽)의 마을. 펫 사냥 초보 거점. 아래쪽 난쟁이·장로 사냥터, 11시 방향 오우거 밭. 북쪽으로 오크 지역.",
+      "x": 34,
+      "y": 30,
+      "neighbors": [
+        "글루디오",
+        "기란 마을",
+        "오크 숲 / 오크 부락 / 오크 성벽",
+        "산적 소굴"
+      ],
+      "coastal": false,
+      "posConfidence": "확인",
+      "sources": [
+        "https://www.khgames.co.kr/news/articleView.html?idxno=6707"
+      ]
+    },
+    {
+      "region": "오렌",
+      "continent": "아덴 대륙 (동부)",
+      "levelRange": "40~70",
+      "hasBoss": false,
+      "regionNo": null,
+      "note": "[지도 기준점] 대륙 동부 마법 문화 중심 마을(상아탑 인근). 남동쪽 엘모어밭. 북쪽 설벽, 동쪽 오만.",
+      "mapNote": "[지도 기준점] 대륙 동부 마법 문화 중심 마을(상아탑 인근). 남동쪽 엘모어밭. 북쪽 설벽, 동쪽 오만.",
+      "x": 70,
+      "y": 36,
+      "neighbors": [
+        "망자의 무덤",
+        "상아탑",
+        "오렌 설벽",
+        "거울의 숲",
+        "용의 계곡 / 용의 던전",
+        "오만과 신념의 탑"
+      ],
+      "coastal": false,
+      "posConfidence": "확인",
+      "sources": [
+        "https://www.khgames.co.kr/news/articleView.html?idxno=6707",
+        "https://lineagem.inven.co.kr/dataninfo/maps/?idx=182409"
+      ]
+    },
+    {
+      "region": "하이네",
+      "continent": "아덴 대륙 (남부 해안)",
+      "levelRange": "40~70",
+      "hasBoss": false,
+      "regionNo": null,
+      "note": "[지도 기준점] 남부 해안 항구 마을. 기란과 직접 연결, 은기사 마을 동쪽. 방사형 사냥터. 에바 왕국(수중)·로서스 섬 관문.",
+      "mapNote": "[지도 기준점] 남부 해안 항구 마을. 기란과 직접 연결, 은기사 마을 동쪽. 방사형 사냥터. 에바 왕국(수중)·로서스 섬 관문.",
+      "x": 58,
+      "y": 72,
+      "neighbors": [
+        "기란 마을",
+        "은기사 마을",
+        "에바왕국 던전",
+        "로서스 섬",
+        "아덴"
+      ],
+      "coastal": true,
+      "posConfidence": "확인",
+      "sources": [
+        "https://www.khgames.co.kr/news/articleView.html?idxno=6707"
+      ]
+    },
+    {
+      "region": "아덴",
+      "continent": "아덴 대륙 (중남부, 수도)",
+      "levelRange": "50~",
+      "hasBoss": false,
+      "regionNo": null,
+      "note": "[지도 기준점] 대륙 중남부의 왕국 수도(아덴성). 기란 남쪽. 은기사 마을·하이네와 연결.",
+      "mapNote": "[지도 기준점] 대륙 중남부의 왕국 수도(아덴성). 기란 남쪽. 은기사 마을·하이네와 연결.",
+      "x": 50,
+      "y": 68,
+      "neighbors": [
+        "은기사 마을",
+        "하이네"
+      ],
+      "coastal": false,
+      "posConfidence": "확인",
+      "sources": [
+        "https://www.inven.co.kr/webzine/news/?news=179278&site=lineage",
+        "https://lineagem.inven.co.kr/dataninfo/maps/?idx=182409"
       ]
     }
   ],
@@ -324,7 +678,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://m.hungryapp.co.kr/bbs/bbs_view.php?pid=10910&bcode=lineagem"
       ],
-      "regionNo": "59"
+      "regionNo": "59",
+      "rx": 50,
+      "ry": 45,
+      "posConfidence": "확인",
+      "worldRegion": "죽음의 폐허 / 카오틱 신전"
     },
     {
       "name": "커츠",
@@ -352,7 +710,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/board/lineagem/5056/294",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "08"
+      "regionNo": "08",
+      "rx": 55,
+      "ry": 62,
+      "posConfidence": "추정",
+      "worldRegion": "검은 기사단 선착장"
     },
     {
       "name": "가스트 로드",
@@ -376,7 +738,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "40"
+      "regionNo": "40",
+      "rx": 70,
+      "ry": 26,
+      "posConfidence": "확인",
+      "worldRegion": "오크 숲 / 오크 부락 / 오크 성벽"
     },
     {
       "name": "메르키오르",
@@ -399,7 +765,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": "12"
+      "regionNo": "12",
+      "rx": 38,
+      "ry": 42,
+      "posConfidence": "추정",
+      "worldRegion": "마법사의 연구실"
     },
     {
       "name": "발터자르",
@@ -422,7 +792,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": "12"
+      "regionNo": "12",
+      "rx": 60,
+      "ry": 42,
+      "posConfidence": "추정",
+      "worldRegion": "마법사의 연구실"
     },
     {
       "name": "세마",
@@ -445,7 +819,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": "12"
+      "regionNo": "12",
+      "rx": 38,
+      "ry": 62,
+      "posConfidence": "추정",
+      "worldRegion": "마법사의 연구실"
     },
     {
       "name": "카스파",
@@ -476,7 +854,11 @@ window.LM_BOSS = {
         "https://lineagem.plaync.com/board/free/view?articleId=5e07d4c6d7a85c0001a1c018",
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": "12"
+      "regionNo": "12",
+      "rx": 60,
+      "ry": 62,
+      "posConfidence": "추정",
+      "worldRegion": "마법사의 연구실"
     },
     {
       "name": "거대 수호 개미",
@@ -498,7 +880,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "68"
+      "regionNo": "68",
+      "rx": 50,
+      "ry": 55,
+      "posConfidence": "확인",
+      "worldRegion": "개미 굴 (개미굴 입구)"
     },
     {
       "name": "스피리드",
@@ -519,7 +905,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "41"
+      "regionNo": "41",
+      "rx": 48,
+      "ry": 48,
+      "posConfidence": "추정",
+      "worldRegion": "오크 숲 / 오크 부락 / 오크 성벽"
     },
     {
       "name": "네크로맨서",
@@ -539,7 +929,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": "23"
+      "regionNo": "23",
+      "rx": 42,
+      "ry": 45,
+      "posConfidence": "추정",
+      "worldRegion": "망자의 무덤"
     },
     {
       "name": "리칸트",
@@ -564,7 +958,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/board/lineagem/5056/6054",
         "https://lineagem.plaync.com/board/free/view?articleId=5e07d4c6d7a85c0001a1c018"
       ],
-      "regionNo": "06"
+      "regionNo": "06",
+      "rx": 66,
+      "ry": 80,
+      "posConfidence": "확인",
+      "worldRegion": "요정 숲 마을"
     },
     {
       "name": "데스나이트",
@@ -588,7 +986,11 @@ window.LM_BOSS = {
         "https://m.hungryapp.co.kr/bbs/bbs_view.php?pid=10910&bcode=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "23"
+      "regionNo": "23",
+      "rx": 60,
+      "ry": 56,
+      "posConfidence": "추정",
+      "worldRegion": "망자의 무덤"
     },
     {
       "name": "아르피어",
@@ -609,7 +1011,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "53"
+      "regionNo": "53",
+      "rx": 50,
+      "ry": 16,
+      "posConfidence": "확인",
+      "worldRegion": "은기사 마을"
     },
     {
       "name": "도펠겡어",
@@ -631,7 +1037,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "54"
+      "regionNo": "54",
+      "rx": 66,
+      "ry": 80,
+      "posConfidence": "확인",
+      "worldRegion": "거울의 숲"
     },
     {
       "name": "자이언트 웜",
@@ -654,7 +1064,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "21"
+      "regionNo": "21",
+      "rx": 50,
+      "ry": 38,
+      "posConfidence": "확인",
+      "worldRegion": "에바왕국 던전"
     },
     {
       "name": "드레이크",
@@ -677,7 +1091,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 42,
+      "ry": 62,
+      "posConfidence": "추정",
+      "worldRegion": "용의 계곡 / 용의 던전"
     },
     {
       "name": "거대 드레이크",
@@ -701,7 +1119,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://news.nate.com/view/20180314n18493"
       ],
-      "regionNo": "17"
+      "regionNo": "17",
+      "rx": 52,
+      "ry": 32,
+      "posConfidence": "확인",
+      "worldRegion": "용의 계곡 / 용의 던전"
     },
     {
       "name": "이프리트",
@@ -723,7 +1145,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://news.nate.com/view/20180314n18493"
       ],
-      "regionNo": "33"
+      "regionNo": "33",
+      "rx": 34,
+      "ry": 22,
+      "posConfidence": "확인",
+      "worldRegion": "화룡의 둥지 / 화염의 둥지"
     },
     {
       "name": "큰 발의 마요",
@@ -745,7 +1171,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://news.nate.com/view/20180314n18493"
       ],
-      "regionNo": "36"
+      "regionNo": "36",
+      "rx": 50,
+      "ry": 16,
+      "posConfidence": "확인",
+      "worldRegion": "오렌 설벽 (설벽)"
     },
     {
       "name": "피닉스",
@@ -769,7 +1199,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "http://www.ujeil.com/news/articleView.html?idxno=218294"
       ],
-      "regionNo": "33"
+      "regionNo": "33",
+      "rx": 52,
+      "ry": 16,
+      "posConfidence": "확인",
+      "worldRegion": "화룡의 둥지 / 화염의 둥지"
     },
     {
       "name": "감시자 데몬",
@@ -790,7 +1224,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/board/lineagem/5056/6054",
         "https://lineagem.plaync.com/board/free/view?articleId=5e07d4c6d7a85c0001a1c018"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 48,
+      "ry": 20,
+      "posConfidence": "확인",
+      "worldRegion": "상아탑"
     },
     {
       "name": "산적 두목",
@@ -811,7 +1249,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem",
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": "30"
+      "regionNo": "30",
+      "rx": 55,
+      "ry": 60,
+      "posConfidence": "추정",
+      "worldRegion": "산적 소굴"
     },
     {
       "name": "샤스키",
@@ -831,7 +1273,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 84,
+      "posConfidence": "확인",
+      "worldRegion": "엘모어 전초기지 / 격전지"
     },
     {
       "name": "자크",
@@ -852,7 +1298,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/board/lineagem/5056/6054",
         "https://lineagem.plaync.com/board/free/view?articleId=5e07d4c6d7a85c0001a1c018"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 50,
+      "posConfidence": "추정",
+      "worldRegion": "로서스 섬"
     },
     {
       "name": "클라인",
@@ -872,7 +1322,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/6054"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 52,
+      "posConfidence": "추정",
+      "worldRegion": "기란 마을"
     },
     {
       "name": "파우스트",
@@ -903,7 +1357,11 @@ window.LM_BOSS = {
         "https://lineagem.plaync.com/board/knowhow/view?articleId=5c0d2f5dd389e900014e790b",
         "https://lineagem.plaync.com/board/free/view?articleId=5c9a0a4fd54e64000176553c"
       ],
-      "regionNo": "04"
+      "regionNo": "04",
+      "rx": 45,
+      "ry": 48,
+      "posConfidence": "추정",
+      "worldRegion": "기란 감옥 던전"
     },
     {
       "name": "올딘의 환영",
@@ -924,7 +1382,11 @@ window.LM_BOSS = {
         "https://lineagem.plaync.com/guidebook/view?title=파티+던전+오림",
         "https://www.gamechosun.co.kr/webzine/article/view.php?no=148628"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 20,
+      "posConfidence": "확인",
+      "worldRegion": null
     },
     {
       "name": "데스나이트",
@@ -948,7 +1410,11 @@ window.LM_BOSS = {
         "https://about.ncsoft.com/news/article/lineagem-update-250319",
         "https://m.inven.co.kr/webzine/wznews.php?idx=304071&site=ow"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 18,
+      "posConfidence": "확인",
+      "worldRegion": "글루디오"
     },
     {
       "name": "마령군왕 라이아",
@@ -968,7 +1434,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.gamechosun.co.kr/webzine/article/view.php?no=150527"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 62,
+      "ry": 36,
+      "posConfidence": "확인",
+      "worldRegion": null
     },
     {
       "name": "바포메트",
@@ -989,7 +1459,11 @@ window.LM_BOSS = {
         "https://about.ncsoft.com/news/article/lineagem-update-250319",
         "https://www.inven.co.kr/board/lineagem/5056/25051"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 72,
+      "posConfidence": "확인",
+      "worldRegion": "말하는 섬"
     },
     {
       "name": "암살군왕 슬레이브",
@@ -1010,7 +1484,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=297045&site=lineagem",
         "https://www.gamechosun.co.kr/webzine/article/view.php?no=150527"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 38,
+      "ry": 36,
+      "posConfidence": "확인",
+      "worldRegion": null
     },
     {
       "name": "마수군왕 바란카",
@@ -1030,7 +1508,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.gamechosun.co.kr/webzine/article/view.php?no=150527"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 38,
+      "ry": 68,
+      "posConfidence": "확인",
+      "worldRegion": null
     },
     {
       "name": "명법군왕 헬바인",
@@ -1050,7 +1532,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.gamechosun.co.kr/webzine/article/view.php?no=150527"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 62,
+      "ry": 68,
+      "posConfidence": "확인",
+      "worldRegion": null
     },
     {
       "name": "감시자 리퍼",
@@ -1070,7 +1556,11 @@ window.LM_BOSS = {
       "sources": [
         "http://www.newsworker.co.kr/news/articleView.html?idxno=17463"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 56,
+      "ry": 22,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "공포의 뱀파이어",
@@ -1090,7 +1580,11 @@ window.LM_BOSS = {
       "sources": [
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=185439"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 56,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "데몬",
@@ -1112,7 +1606,11 @@ window.LM_BOSS = {
         "https://www.playforum.net/news/articleView.html?idxno=188376",
         "https://lineagem.inven.co.kr/dataninfo/monster/detail.php?monstercode=526"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 58,
+      "ry": 28,
+      "posConfidence": "추정",
+      "worldRegion": "상아탑"
     },
     {
       "name": "불사의 머미 로드",
@@ -1132,7 +1630,11 @@ window.LM_BOSS = {
       "sources": [
         "https://2hoursago.com/저장소/104"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 30,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "불신의 시어",
@@ -1153,7 +1655,11 @@ window.LM_BOSS = {
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=185439",
         "https://www.inven.co.kr/board/lineagem/5056/6045"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 68,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "사신의 분신",
@@ -1175,7 +1681,11 @@ window.LM_BOSS = {
         "https://www.gamemeca.com/fam.php?gcode=fam_travel&rts=board&gid=1632511",
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=185439"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 48,
+      "ry": 9,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "서큐버스 퀸",
@@ -1196,7 +1706,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/webzine/news/?news=180016&site=lineagem",
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=182978"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 66,
+      "ry": 54,
+      "posConfidence": "추정",
+      "worldRegion": "용의 계곡 / 용의 던전"
     },
     {
       "name": "얼음여왕",
@@ -1219,7 +1733,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 44,
+      "posConfidence": "확인",
+      "worldRegion": "오렌"
     },
     {
       "name": "잔혹한 아이리스",
@@ -1240,7 +1758,11 @@ window.LM_BOSS = {
         "http://www.osen.co.kr/article/G1110887983",
         "http://www.newsworker.co.kr/news/articleView.html?idxno=17463"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 44,
+      "ry": 22,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "제니스 퀸",
@@ -1261,7 +1783,11 @@ window.LM_BOSS = {
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=185439",
         "https://www.inven.co.kr/board/lineagem/5056/6045"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 80,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "죽음의 좀비 로드",
@@ -1281,7 +1807,11 @@ window.LM_BOSS = {
       "sources": [
         "https://2hoursago.com/저장소/104"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 46,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "지옥의 쿠거",
@@ -1301,7 +1831,11 @@ window.LM_BOSS = {
       "sources": [
         "https://2hoursago.com/저장소/104"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 38,
+      "posConfidence": "확인",
+      "worldRegion": "오만과 신념의 탑 (오만의 탑)"
     },
     {
       "name": "린드비오르",
@@ -1323,7 +1857,11 @@ window.LM_BOSS = {
         "https://lineagem.inven.co.kr/dataninfo/skill/detail.php?code=30652",
         "https://inews24.com/view/1094681"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 50,
+      "ry": 50,
+      "posConfidence": "추정",
+      "worldRegion": null
     },
     {
       "name": "발라카스",
@@ -1348,7 +1886,11 @@ window.LM_BOSS = {
         "https://m.ruliweb.com/community/board/300141/read/30584607",
         "https://www.inven.co.kr/board/lineagem/5056/23271"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 46,
+      "ry": 8,
+      "posConfidence": "확인",
+      "worldRegion": "화룡의 둥지 / 화염의 둥지"
     },
     {
       "name": "안타라스",
@@ -1374,7 +1916,11 @@ window.LM_BOSS = {
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=182978",
         "https://m.inven.co.kr/webzine/wznews.php?site=lineage&l=91985&p=15&idx=112907"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 44,
+      "ry": 50,
+      "posConfidence": "추정",
+      "worldRegion": null
     },
     {
       "name": "파푸리온",
@@ -1397,7 +1943,11 @@ window.LM_BOSS = {
         "https://www.inven.co.kr/board/lineagem/5056/21354",
         "https://www.thisisgame.com/bns/tboard/?board=37&n=298997"
       ],
-      "regionNo": null
+      "regionNo": null,
+      "rx": 56,
+      "ry": 54,
+      "posConfidence": "추정",
+      "worldRegion": null
     },
     {
       "name": "에인션트 자이언트",
@@ -1417,7 +1967,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/14983"
       ],
-      "regionNo": "74"
+      "regionNo": "74",
+      "rx": 50,
+      "ry": 50,
+      "posConfidence": "추정",
+      "worldRegion": "황혼 산맥"
     },
     {
       "name": "암흑대장로",
@@ -1437,7 +1991,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/14983"
       ],
-      "regionNo": "75"
+      "regionNo": "75",
+      "rx": 40,
+      "ry": 44,
+      "posConfidence": "추정",
+      "worldRegion": "흑기사 전투기지"
     },
     {
       "name": "베리스",
@@ -1457,7 +2015,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/14983"
       ],
-      "regionNo": "75"
+      "regionNo": "75",
+      "rx": 56,
+      "ry": 44,
+      "posConfidence": "추정",
+      "worldRegion": "흑기사 전투기지"
     },
     {
       "name": "케레니스",
@@ -1477,7 +2039,11 @@ window.LM_BOSS = {
       "sources": [
         "https://www.inven.co.kr/board/lineagem/5056/14983"
       ],
-      "regionNo": "75"
+      "regionNo": "75",
+      "rx": 48,
+      "ry": 60,
+      "posConfidence": "추정",
+      "worldRegion": "흑기사 전투기지"
     },
     {
       "name": "대흑장로",
@@ -1498,7 +2064,11 @@ window.LM_BOSS = {
         "https://lineagem.inven.co.kr/dataninfo/guide/?idx=182978",
         "https://www.inven.co.kr/webzine/news/?news=181159&site=lineagem"
       ],
-      "regionNo": "15"
+      "regionNo": "15",
+      "rx": 48,
+      "ry": 54,
+      "posConfidence": "확인",
+      "worldRegion": "용의 계곡 / 용의 던전"
     }
   ]
 };

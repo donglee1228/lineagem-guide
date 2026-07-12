@@ -410,6 +410,63 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
 .rtile .rname{font-size:.85rem;font-weight:800;line-height:1.2}
 .rtile .rbcount{font-size:.7rem;color:#bcd3e8;font-weight:700}
 .rtile.empty0 .rbcount{color:var(--muted)}
+
+/* ===== 오리지널 SVG 월드맵 ===== */
+.wmap-wrap{background:radial-gradient(120% 100% at 50% 0%,#0f1a24,#0b0d12);
+  border:1px solid var(--border);border-radius:13px;padding:6px;margin-bottom:10px;position:relative}
+.wmap{display:block;width:100%;height:auto;touch-action:manipulation;border-radius:9px}
+.wmap text{font-family:inherit;pointer-events:none}
+.wmap .rlabel{fill:#cdd7e2;font-weight:800;paint-order:stroke;
+  stroke:#0a0c11;stroke-width:.7px;stroke-linejoin:round}
+.wmap .rlabel.dim{fill:#8b93a3}
+.wmap .rlv2{fill:#98a2b3;font-weight:700}
+.wmap .glyph{font-size:2.6px}
+.wmap .rpin{cursor:pointer}
+.wmap .rpin:hover .pinhit{stroke:#fff;stroke-width:.7px}
+.wmap .pin-est{stroke-dasharray:1.2 1}
+.wmap .cbadge{fill:#0f1116;stroke-width:.5px}
+.wmap .cbnum{fill:#fff;font-weight:800;font-size:2.2px;text-anchor:middle}
+.wmap .road{stroke:#3a4658;stroke-width:.35px;opacity:.4;fill:none}
+.wmap .rlead{stroke:#5c6a7d;stroke-width:.28px;opacity:.6;fill:none}
+.wmap-title{position:absolute;top:12px;left:13px;font-size:.72rem;font-weight:800;
+  color:#bcd3e8;letter-spacing:.4px;text-shadow:0 1px 3px #000;pointer-events:none}
+.wmap-note{font-size:.68rem;color:var(--muted);line-height:1.5;margin:2px 2px 0;
+  display:flex;align-items:center;gap:5px}
+.map-est-legend{font-size:.66rem;color:var(--muted);margin-bottom:8px;padding:6px 10px;
+  background:var(--card);border:1px solid var(--border);border-radius:8px;line-height:1.5}
+.map-est-legend b{color:#bcd3e8}
+.map-sub-h{font-size:.74rem;font-weight:800;color:var(--gold);margin:14px 2px 7px;
+  display:flex;align-items:center;gap:6px}
+.map-sub-h .sh-sub{font-size:.66rem;color:var(--muted);font-weight:600}
+
+/* 미배치(인스턴스/레이드) 리스트 */
+.unplaced-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.uchip{font-size:.7rem;padding:3px 9px;border-radius:999px;background:var(--card);
+  border:1px solid var(--border);color:#cfcdc7;display:inline-flex;align-items:center;gap:5px}
+.uchip .udot{width:8px;height:8px;border-radius:50%;flex:none}
+
+/* ===== 지역 상세 드릴다운 ===== */
+.rd-back{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;
+  background:var(--card);border:1px solid var(--border);border-radius:9px;padding:7px 13px;
+  color:#bcd3e8;cursor:pointer;margin-bottom:10px}
+.rd-back:hover{border-color:var(--gold)}
+.rd-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:4px}
+.rd-head .rdname{font-size:1.05rem;font-weight:800;color:var(--text)}
+.rd-head .rdno{font-size:.64rem;font-weight:800;padding:2px 7px;border-radius:6px;
+  background:var(--card2);border:1px solid var(--border);color:var(--gold)}
+.rd-head .rdlv{font-size:.72rem;color:var(--muted);font-weight:700}
+.rd-note{font-size:.74rem;color:var(--muted);line-height:1.5;margin-bottom:9px}
+.rd-map-wrap{background:radial-gradient(120% 100% at 50% 0%,#141c26,#0c0f14);
+  border:1px solid var(--border);border-radius:12px;padding:6px;margin-bottom:12px;position:relative}
+.rdmap{display:block;width:100%;height:auto;border-radius:8px}
+.rdmap text{font-family:inherit;pointer-events:none}
+.rdmap .bplabel{fill:#e6e2d8;font-weight:800;font-size:2.6px;paint-order:stroke;
+  stroke:#0a0c11;stroke-width:.8px;stroke-linejoin:round}
+.rdmap .bpin{cursor:pointer}
+.rdmap .bpin:hover .bhit,.rdmap .bpin.sel .bhit{stroke:#fff;stroke-width:.9px}
+.rdmap .bp-est{stroke-dasharray:1.4 1.1}
+.rd-empty{font-size:.78rem;color:var(--muted);padding:16px;text-align:center}
+.bitem.hlpin{outline:2px solid var(--gold);outline-offset:1px;box-shadow:0 0 0 4px rgba(201,162,75,.12)}
 </style>
 </head>
 <body>
@@ -1026,7 +1083,7 @@ engBody.addEventListener('input',function(e){
 var bossSheet=document.getElementById('bossSheet');
 var bossHead=document.getElementById('bossHead');
 var bossBody=document.getElementById('bossBody');
-var bossState={ tab:'all', region:'', q:'' };
+var bossState={ tab:'all', region:'', q:'', mapRegion:null };
 
 function bossHl(text){
   var t=esc(text), q=bossState.q;
@@ -1064,40 +1121,290 @@ function bossRegionOptions(){
   arr.sort(function(a,b){ return a.localeCompare(b,'ko'); });
   return arr;
 }
-/* 오리지널 지역 맵 보드 — regions[]로 지역 타일 그리드 (레벨 오름차순·보스수·최상위 tier색) */
-function mapBoardHTML(){
-  var counts={}, top={};
-  BOSS_LIST.forEach(function(b){
-    var k=bossRegionKey(b);
-    counts[k]=(counts[k]||0)+1;
-    if(!top[k] || (G_PRIO[b.groupKey]||0)>(G_PRIO[top[k]]||0)) top[k]=b.groupKey;
+/* ===== 오리지널 SVG 월드맵 준비 ===== */
+var G_COLOR=(BOSS_META.groupColor)||
+  {field_small:'var(--muted)',field_named:'var(--r-ranged)',dungeon_tower:'var(--r-tank)',raid_world:'var(--gold)'};
+var REGION_BY_NAME={};
+BOSS_REGIONS.forEach(function(r){ REGION_BY_NAME[r.region]=r; });
+function bossesInRegion(name){ return BOSS_LIST.filter(function(b){ return b.worldRegion===name; }); }
+var WR_COUNT={}, WR_TOP={};
+BOSS_LIST.forEach(function(b){
+  var w=b.worldRegion; if(!w) return;
+  WR_COUNT[w]=(WR_COUNT[w]||0)+1;
+  if(!WR_TOP[w]||(G_PRIO[b.groupKey]||0)>(G_PRIO[WR_TOP[w]]||0)) WR_TOP[w]=b.groupKey;
+});
+function isEst(c){ return typeof c==='string' && /추정/.test(c); }
+function terrainGlyph(r){
+  var s=String(r.region)+' '+String(r.mapNote||'')+' '+String(r.note||'');
+  if(/설벽|설원|얼음|눈/.test(s)) return '❄️';
+  if(/화룡|화염|화산|용암/.test(s)) return '🌋';
+  if(/산맥|산악|황혼/.test(s)) return '⛰️';
+  if(/섬/.test(s)) return '🏝️';
+  if(/숲|요정|거울/.test(s)) return '🌲';
+  if(/탑/.test(s)) return '🗼';
+  if(/무덤|폐허|카오틱|죽음/.test(s)) return '🪦';
+  if(/개미|감옥|굴|던전|연구실/.test(s)) return '🕳️';
+  if(/오크/.test(s)) return '🏹';
+  if(r.hasBoss===false) return '🏰';
+  return '⚔️';
+}
+function terrainTint(r){
+  var s=String(r.region)+' '+String(r.mapNote||'');
+  if(/설벽|설원|얼음/.test(s)) return ['#20303f','#121b25'];
+  if(/화룡|화염|화산/.test(s)) return ['#301715','#160c0b'];
+  if(/숲|요정|거울/.test(s)) return ['#16261a','#0d150f'];
+  if(/섬|해안|수중|에바|로서스/.test(s)) return ['#123243','#0b1a24'];
+  if(/탑|상아탑|오만/.test(s)) return ['#1e1a2a','#100e18'];
+  if(/무덤|폐허|카오틱/.test(s)) return ['#241a24','#120d12'];
+  return ['#1b212b','#0e1218'];
+}
+/* 대륙/바다 도식 (오리지널 일러스트 — 타사 이미지 미사용) */
+var LAND_DEFS='<defs>'
+  +'<radialGradient id="seaG" cx="50%" cy="24%" r="90%">'
+    +'<stop offset="0%" stop-color="#16324a"/><stop offset="55%" stop-color="#0e2236"/>'
+    +'<stop offset="100%" stop-color="#081521"/></radialGradient>'
+  +'<linearGradient id="landG" x1="0" y1="0" x2="0" y2="1">'
+    +'<stop offset="0%" stop-color="#2b2f38"/><stop offset="100%" stop-color="#1a1d25"/></linearGradient>'
+  +'</defs>';
+var LAND_MAIN='M 33 7 C 44 3 55 6 62 11 C 70 9 79 11 85 17 '
+  +'C 93 23 95 31 90 37 C 94 44 92 51 86 55 C 84 63 86 71 77 75 '
+  +'C 71 82 64 87 56 86 C 49 88 43 84 39 80 C 33 83 29 79 27 72 '
+  +'C 21 67 17 60 20 52 C 17 44 21 37 26 33 C 24 24 27 15 33 7 Z';
+var ISLAND_NW='M 9 15 C 14 12 20 14 21 20 C 23 27 19 34 20 39 '
+  +'C 15 40 9 36 8 30 C 5 25 5 18 9 15 Z';
+var ISLAND_SE='M 71 76 C 77 74 83 78 83 84 C 83 90 77 92 72 89 '
+  +'C 67 87 66 79 71 76 Z';
+
+function worldMapSVG(){
+  var roads='';
+  BOSS_REGIONS.forEach(function(r){
+    if(r.x==null) return;
+    (r.neighbors||[]).forEach(function(nn){
+      var nb=REGION_BY_NAME[nn]; if(!nb||nb.x==null) return;
+      if(r.region>=nb.region) return; /* 중복선 방지 */
+      roads+='<line class="road" x1="'+r.x+'" y1="'+r.y+'" x2="'+nb.x+'" y2="'+nb.y+'"/>';
+    });
   });
-  var regions=BOSS_REGIONS.filter(function(r){ return r.hasBoss; })
+  /* ---- 라벨 레이아웃: 후보위치 점수법(양측·상하·거리) + 핀 장애물 회피 + 리더선 ----
+     29개 지역명이 밀집(특히 중앙~동부)해 겹침·클리핑되던 문제를, 각 라벨마다
+     여러 후보 위치를 점수화(다른 라벨/핀과의 겹침·경계이탈·이동거리 벌점)해 최적 배치.
+     핀 좌표(보스 실제 위치)는 불변 — 라벨만 빈 공간으로 분산. */
+  var VW=100, VH=94, LPAD=1.6, LGAP=5.4, LFS=2.3, LFS2=1.7, LUP=2.05, LDN=2.9;
+  /* 폭 추정은 약간 넉넉히(실제 렌더보다 크게) 잡아 라벨 간 여백 확보 */
+  function lblW(str,fs){
+    var w=0.9;
+    for(var i=0;i<str.length;i++){
+      var ch=str.charCodeAt(i);
+      if(str.charAt(i)===' ') w+=fs*0.36;
+      else if(ch<128) w+=fs*0.62;      /* 아스키(#·숫자·Lv 등) */
+      else w+=fs*1.07;                  /* 한글 전각 */
+    }
+    return w;
+  }
+  /* 표시용 축약: "A / B / C"는 A만, 괄호 부연 제거 (핀 title·목록은 원본 유지) */
+  function shortLabel(nm){
+    var s=String(nm).split(' / ')[0];
+    s=s.replace(/\s*\(.*?\)\s*/g,' ');
+    return s.replace(/\s+/g,' ').trim();
+  }
+  var placedR=BOSS_REGIONS.filter(function(r){return r.x!=null;});
+  /* 라벨 메타 + 핀 장애물 박스(뱃지 반영: 우상단으로 조금 넓게) */
+  var META_L={}, PBOX=[];
+  placedR.forEach(function(r){
+    var name=r.region, cx=r.x, cy=r.y, n=WR_COUNT[name]||0;
+    var disp=shortLabel(name);
+    var lv=(r.regionNo?('#'+r.regionNo+' · '):'')+'Lv '+(r.levelRange||'?');
+    META_L[name]={r:r,cx:cx,cy:cy,n:n,disp:disp,lv:lv,
+      w:Math.max(lblW(disp,LFS), lblW(lv,LFS2))};
+    PBOX.push({x0:cx-3.4, y0:cy-(n>0?4.7:3.4), x1:cx+(n>0?4.8:3.4), y1:cy+3.4, name:name});
+  });
+  function oArea(a,b){
+    var ix=Math.min(a.x1,b.x1)-Math.max(a.x0,b.x0);
+    var iy=Math.min(a.y1,b.y1)-Math.max(a.y0,b.y0);
+    return (ix>0&&iy>0)?ix*iy:0;
+  }
+  var VOFFS=[-0.2]; for(var vk=1;vk<=10;vk++){ VOFFS.push(vk*1.9); VOFFS.push(-vk*1.9); }
+  var DISTS=[LGAP, LGAP+2.6, LGAP+5.4, LGAP+8.2];
+  function candBox(name,side,dist,vo){
+    var m=META_L[name], cx=m.cx, cy=m.cy, w=m.w;
+    var lx=cx+side*dist, boxL=side>0?lx:lx-w, boxR=side>0?lx+w:lx;
+    /* 좌/우 경계 클램프: 핀이 벽에 붙어도 라벨은 뷰박스 안쪽 */
+    if(boxR>VW-LPAD){ var d=boxR-(VW-LPAD); lx-=d;boxL-=d;boxR-=d; }
+    if(boxL<LPAD){ var d2=LPAD-boxL; lx+=d2;boxL+=d2;boxR+=d2; }
+    var ly=cy-0.2+vo;
+    return {lx:lx,side:side,ly:ly,x0:boxL,y0:ly-LUP,x1:boxR,y1:ly+LDN};
+  }
+  function placeLabel(name, others){
+    var m=META_L[name], pref=(m.cx>=50)?1:-1, best=null, sides=[1,-1];
+    for(var si=0;si<2;si++){ var side=sides[si];
+      for(var di=0;di<DISTS.length;di++){
+        for(var vi=0;vi<VOFFS.length;vi++){
+          var c=candBox(name,side,DISTS[di],VOFFS[vi]), s=0;
+          if(c.y0<LPAD) s+=(LPAD-c.y0)*50;        /* 상단 이탈 */
+          if(c.y1>VH-0.4) s+=(c.y1-(VH-0.4))*50;  /* 하단 이탈 */
+          for(var oi=0;oi<others.length;oi++) s+=oArea(c,others[oi])*14;   /* 라벨끼리 */
+          for(var pi=0;pi<PBOX.length;pi++){ if(PBOX[pi].name===name) continue; s+=oArea(c,PBOX[pi])*10; } /* 핀 */
+          s+=0.16*Math.abs(VOFFS[vi])+0.55*di+(side!==pref?0.7:0); /* 근접·바깥쪽 선호 */
+          if(best===null||s<best.s) best={s:s,side:side,lx:c.lx,ly:c.ly,x0:c.x0,y0:c.y0,x1:c.x1,y1:c.y1};
+        }
+      }
+    }
+    return best;
+  }
+  /* 밀집한 곳부터 배치(주변 핀 밀도 내림차순 → 그다음 위→아래) */
+  function locDens(r){
+    var c=0; placedR.forEach(function(q){ if(q!==r && Math.abs(q.x-r.x)<14 && Math.abs(q.y-r.y)<12) c++; }); return c;
+  }
+  var order=placedR.slice().sort(function(a,b){ var d=locDens(b)-locDens(a); return d!==0?d:(a.y-b.y); });
+  var LAY={}, placedBoxes=[];
+  order.forEach(function(r){ var b=placeLabel(r.region, placedBoxes); LAY[r.region]=b; placedBoxes.push(b); });
+  /* 완화 반복: 배치 순서 편향 제거 (각 라벨을 나머지 고정 상태로 재배치) */
+  for(var rnd=0;rnd<6;rnd++){
+    order.forEach(function(r){
+      var nm=r.region, others=[];
+      for(var kk in LAY){ if(kk!==nm) others.push(LAY[kk]); }
+      LAY[nm]=placeLabel(nm, others);
+    });
+  }
+  var pins='';
+  placedR.forEach(function(r){
+    var m=META_L[r.region], o=LAY[r.region];
+    var cx=m.cx, cy=m.cy, name=r.region, n=m.n;
+    var tier=WR_TOP[name]||(r.hasBoss?'field_named':null);
+    var color=n>0? (G_COLOR[tier]||'var(--r-ranged)') : 'var(--muted)';
+    var est=isEst(r.posConfidence);
+    var ring='<circle class="pinhit'+(est?' pin-est':'')+'" cx="'+cx+'" cy="'+cy+'" r="3" '
+      +'fill="#11151d" stroke="'+color+'" stroke-width="'+(n>0?1.3:0.9)+'"/>';
+    var glyph='<text class="glyph" x="'+cx+'" y="'+(cy+0.95)+'" text-anchor="middle">'+terrainGlyph(r)+'</text>';
+    var badge='';
+    if(n>0){
+      badge='<circle class="cbadge" cx="'+(cx+2.7)+'" cy="'+(cy-2.7)+'" r="1.9" stroke="'+color+'" fill="#0f1116"/>'
+        +'<text class="cbnum" x="'+(cx+2.7)+'" y="'+(cy-1.95)+'">'+n+'</text>';
+    }
+    /* 리더선: 라벨이 핀에서 떨어졌으면 핀 가장자리→라벨 근처로 얇게 연결 */
+    var anchorX=o.lx, anchorY=o.ly-0.6, dx=anchorX-cx, dy=anchorY-cy, dd=Math.sqrt(dx*dx+dy*dy), lead='';
+    if(dd>6.4){
+      var sx=(cx+dx/dd*3.1).toFixed(2), sy=(cy+dy/dd*3.1).toFixed(2);
+      lead='<line class="rlead" x1="'+sx+'" y1="'+sy+'" x2="'+anchorX.toFixed(2)+'" y2="'+anchorY.toFixed(2)+'"/>';
+    }
+    var anchor=o.side>0?'start':'end';
+    var label='<text class="rlabel'+(n>0?'':' dim')+'" x="'+o.lx+'" y="'+o.ly+'" '
+      +'text-anchor="'+anchor+'" font-size="'+LFS+'">'+esc(m.disp)+'</text>'
+      +'<text class="rlv2" x="'+o.lx+'" y="'+(o.ly+2.2)+'" text-anchor="'+anchor+'" font-size="'+LFS2+'">'+esc(m.lv)+'</text>';
+    pins+='<g class="rpin" data-map-region="'+esc(name)+'">'
+      +'<title>'+esc(name)+' · Lv '+esc(r.levelRange||'?')+(n>0?(' · 보스 '+n+'종'):' · 참조 지점')+'</title>'
+      +lead+ring+glyph+badge+label+'</g>';
+  });
+  var svg='<svg class="wmap" viewBox="0 0 100 94" preserveAspectRatio="xMidYMid meet" '
+    +'role="img" aria-label="아덴 대륙 보스 지역 지도">'
+    +LAND_DEFS
+    +'<rect x="0" y="0" width="100" height="94" fill="url(#seaG)"/>'
+    +'<path d="'+ISLAND_NW+'" fill="url(#landG)" stroke="var(--gold-dim)" stroke-width="0.5" opacity="0.9"/>'
+    +'<path d="'+ISLAND_SE+'" fill="url(#landG)" stroke="var(--gold-dim)" stroke-width="0.5" opacity="0.9"/>'
+    +'<path d="'+LAND_MAIN+'" fill="url(#landG)" stroke="var(--gold-dim)" stroke-width="0.6"/>'
+    +roads+pins+'</svg>';
+  return '<div class="wmap-wrap"><div class="wmap-title">🗺️ 아덴 대륙</div>'+svg+'</div>';
+}
+
+/* 하단 보조 타일 리스트 (기존 보드 유지 · 전체 지역 목록/필터) */
+function mapTileBoard(){
+  var regions=BOSS_REGIONS.filter(function(r){ return r.x!=null; })
     .slice().sort(function(a,b){ return lvNum(a.levelRange)-lvNum(b.levelRange); });
   var tiles=regions.map(function(r){
-    var k=canonKey(r.region, r.regionNo);
-    var n=counts[k]||0;
-    var tg=top[k]||'field_named';
+    var name=r.region;
+    var n=WR_COUNT[name]||0;
+    var tg=WR_TOP[name]||'field_named';
     var cls='rtile top-'+tg+(n===0?' empty0':'');
-    var attr=n>0?' data-region-key="'+esc(k)+'"':'';
-    return '<button class="'+cls+'"'+attr+'>'
+    return '<button class="'+cls+'" data-map-region="'+esc(name)+'">'
       +'<div class="rtop">'+(r.regionNo?'<span class="rno">#'+esc(r.regionNo)+'</span>':'')
         +'<span class="rlv">Lv '+esc(r.levelRange||'?')+'</span></div>'
-      +'<div class="rname">'+esc(r.region)+'</div>'
-      +'<div class="rbcount">'+(n>0?('보스 '+n+'종'):'보스 정보 없음')+'</div>'
+      +'<div class="rname">'+esc(name)+'</div>'
+      +'<div class="rbcount">'+(n>0?('보스 '+n+'종'):'참조 지점')+'</div>'
       +'</button>';
   }).join('');
-  var legend='<div class="map-legend">'
-    +'<span class="lg"><span class="sw" style="background:var(--muted)"></span>자잘</span>'
-    +'<span class="lg"><span class="sw" style="background:var(--r-ranged)"></span>필드네임드</span>'
-    +'<span class="lg"><span class="sw" style="background:var(--r-tank)"></span>던전·탑</span>'
-    +'<span class="lg"><span class="sw" style="background:var(--gold)"></span>레이드·월드</span>'
-    +'</div>';
-  return '<div class="map-hint">🗺️ <b>지역 타일</b>을 누르면 그 지역 보스로 바로 이동해요. '
-    +'왼쪽 위 <b>#번호</b>는 게임 내 지역 맵 번호, <b>윗 색 띠</b>는 그 지역 최상위 보스 등급이에요. '
-    +'저레벨 → 고레벨 순으로 배치했어요. (인벤 워터마크 이미지 대신 자체 데이터로 그린 오리지널 맵)</div>'
-    +legend
-    +'<div class="map-board">'+tiles+'</div>';
+  return '<div class="map-board">'+tiles+'</div>';
+}
+
+/* 미배치(인스턴스/소환형) 보스 */
+function unplacedHTML(){
+  var un=BOSS_LIST.filter(function(b){ return !b.worldRegion; });
+  if(!un.length) return '';
+  var chips=un.map(function(b){
+    return '<span class="uchip"><span class="udot" style="background:'+(G_COLOR[b.groupKey]||'var(--muted)')+'"></span>'
+      +esc(b.name)+'</span>';
+  }).join('');
+  return '<div class="map-sub-h">🔒 위치 미표기 <span class="sh-sub">인스턴스/소환형 레이드 '+un.length+'종 — 고정 필드 좌표 없음</span></div>'
+    +'<div class="unplaced-list">'+chips+'</div>';
+}
+
+var MAP_LEGEND='<div class="map-legend">'
+  +'<span class="lg"><span class="sw" style="background:var(--muted)"></span>자잘</span>'
+  +'<span class="lg"><span class="sw" style="background:var(--r-ranged)"></span>필드네임드</span>'
+  +'<span class="lg"><span class="sw" style="background:var(--r-tank)"></span>던전·탑</span>'
+  +'<span class="lg"><span class="sw" style="background:var(--gold)"></span>레이드·월드</span>'
+  +'</div>';
+
+function mapBoardHTML(){
+  var estN=BOSS_REGIONS.filter(function(r){return r.x!=null&&isEst(r.posConfidence);}).length;
+  var totN=BOSS_REGIONS.filter(function(r){return r.x!=null;}).length;
+  return '<div class="map-hint">🗺️ 지도 위 <b>지역 핀</b>을 누르면 그 지역 상세 지도로 들어가 보스 위치를 봐요. '
+      +'핀 색은 그 지역 <b>최상위 보스 등급</b>, 우상단 숫자는 <b>보스 수</b>예요. '
+      +'<b>점선 테두리</b> 핀은 위치가 추정인 지역이에요.</div>'
+    +MAP_LEGEND
+    +worldMapSVG()
+    +'<div class="wmap-note">ⓘ 실제 배치를 참고해 <b>직접 그린 도식 지도</b>이며 좌표는 근사치예요. '
+      +'인벤/NC 등 타사 지도 이미지는 쓰지 않았어요. 위치 추정 지역 '+estN+'/'+totN+'곳.</div>'
+    +'<div class="map-sub-h">📋 지역 목록 <span class="sh-sub">저레벨→고레벨 · 눌러서 상세 지도</span></div>'
+    +mapTileBoard()
+    +unplacedHTML();
+}
+
+/* ===== 지역 상세 드릴다운 (그 지역 확대 + 보스 핀) ===== */
+function regionMapSVG(r,bosses){
+  var tint=terrainTint(r);
+  var defsId='rd'+(r.regionNo||'x')+Math.abs((r.x||0)*97+(r.y||0));
+  var defs='<defs><linearGradient id="'+defsId+'" x1="0" y1="0" x2="0" y2="1">'
+    +'<stop offset="0%" stop-color="'+tint[0]+'"/><stop offset="100%" stop-color="'+tint[1]+'"/>'
+    +'</linearGradient></defs>';
+  var pins=bosses.map(function(b,i){
+    var rx=(b.rx==null?50:b.rx), ry=(b.ry==null?50:b.ry);
+    var color=G_COLOR[b.groupKey]||'var(--r-ranged)';
+    var est=isEst(b.posConfidence);
+    var lvl=(b.level==null?'미확인':String(b.level));
+    var side=rx>=50?1:-1, anchor=side>0?'start':'end', lx=rx+side*4;
+    var ly=ry+((i%2)?2.6:-1.4);
+    return '<g class="bpin" data-bpin="'+i+'">'
+      +'<title>'+esc(b.name)+' · Lv '+esc(lvl)+' · '+esc(b.respawn||'미확인')+'</title>'
+      +'<circle class="bhit'+(est?' bp-est':'')+'" cx="'+rx+'" cy="'+ry+'" r="3.2" '
+        +'fill="'+color+'" stroke="#0a0c11" stroke-width="0.7"/>'
+      +'<circle cx="'+rx+'" cy="'+ry+'" r="1.3" fill="#0f1116" opacity="0.55"/>'
+      +'<text class="bplabel" x="'+lx+'" y="'+(ly+0.9)+'" text-anchor="'+anchor+'">'+esc(b.name)+'</text>'
+      +'</g>';
+  }).join('');
+  var glyph='<text x="50" y="53" text-anchor="middle" font-size="26" opacity="0.10">'+terrainGlyph(r)+'</text>';
+  return '<div class="rd-map-wrap"><svg class="rdmap" viewBox="0 0 100 100" '
+    +'preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(r.region)+' 상세 지도">'
+    +defs+'<rect x="1" y="1" width="98" height="98" rx="6" fill="url(#'+defsId+')" '
+      +'stroke="var(--gold-dim)" stroke-width="0.6"/>'+glyph+pins+'</svg></div>';
+}
+function regionDetailHTML(name){
+  var r=REGION_BY_NAME[name];
+  if(!r) return '<div class="rd-empty">지역 정보를 찾을 수 없어요.</div>';
+  var bosses=bossesInRegion(name);
+  var head='<button class="rd-back" data-map-back="1">← 월드맵</button>'
+    +'<div class="rd-head"><span class="rdname">'+esc(r.region)+'</span>'
+      +(r.regionNo?'<span class="rdno">#'+esc(r.regionNo)+'</span>':'')
+      +'<span class="rdlv">Lv '+esc(r.levelRange||'?')+' · 보스 '+bosses.length+'종</span></div>'
+    +(r.mapNote?'<div class="rd-note">'+esc(r.mapNote)+'</div>':'');
+  if(!bosses.length){
+    return head+'<div class="rd-empty">이 지역엔 등록된 필드 보스가 없어요 · 지도 기준점(마을/참조 지점)이에요.</div>';
+  }
+  var listHtml=bosses.map(function(b,i){
+    return bossItemHTML(b).replace('<div class="bitem ','<div id="bcard'+i+'" class="bitem ');
+  }).join('');
+  return head+regionMapSVG(r,bosses)
+    +'<div class="map-sub-h">📍 이 지역 보스 <span class="sh-sub">핀을 누르면 아래 카드로 이동</span></div>'
+    +'<div class="boss-list">'+listHtml+'</div>';
 }
 function bossItemHTML(b){
   var g=b.groupKey;
@@ -1158,7 +1465,7 @@ function renderBoss(){
     +'<div class="esub">한국 본서버 필드·던전/탑·레이드/월드 보스 위치·리젠·드랍 · 총 '+BOSS_LIST.length+'종 · 미확인 정직표기</div>'
     +'<div class="eng-tabs">'+tabs+'</div>';
   if(bossState.tab==='map'){
-    bossBody.innerHTML=mapBoardHTML();
+    bossBody.innerHTML=bossState.mapRegion? regionDetailHTML(bossState.mapRegion) : mapBoardHTML();
     bossBody.scrollTop=0;
     return;
   }
@@ -1180,7 +1487,7 @@ function renderBoss(){
 }
 function openBossSheet(){
   if(!BOSS) return;
-  bossState={ tab:'map', region:'', q:'' };
+  bossState={ tab:'map', region:'', q:'', mapRegion:null };
   renderBoss();
   bossSheet.classList.add('open');
   document.body.style.overflow='hidden';
@@ -1189,11 +1496,23 @@ function closeBossSheet(){ bossSheet.classList.remove('open'); document.body.sty
 bossSheet.addEventListener('click',function(e){ if(e.target.hasAttribute('data-bclose')) closeBossSheet(); });
 bossHead.addEventListener('click',function(e){
   var t=e.target.closest('[data-boss-tab]');
-  if(t){ bossState.tab=t.getAttribute('data-boss-tab'); renderBoss(); }
+  if(t){ bossState.tab=t.getAttribute('data-boss-tab'); bossState.mapRegion=null; renderBoss(); }
 });
 bossBody.addEventListener('click',function(e){
-  var tile=e.target.closest('[data-region-key]');
-  if(tile){ bossState.region=tile.getAttribute('data-region-key'); bossState.tab='all'; bossState.q=''; renderBoss(); }
+  var back=e.target.closest('[data-map-back]');
+  if(back){ bossState.mapRegion=null; renderBoss(); return; }
+  var pin=e.target.closest('[data-bpin]');
+  if(pin){
+    var i=pin.getAttribute('data-bpin');
+    bossBody.querySelectorAll('.bpin.sel').forEach(function(x){ x.classList.remove('sel'); });
+    bossBody.querySelectorAll('.bitem.hlpin').forEach(function(x){ x.classList.remove('hlpin'); });
+    pin.classList.add('sel');
+    var card=document.getElementById('bcard'+i);
+    if(card){ card.classList.add('hlpin'); card.scrollIntoView({behavior:'smooth',block:'center'}); }
+    return;
+  }
+  var reg=e.target.closest('[data-map-region]');
+  if(reg){ bossState.mapRegion=reg.getAttribute('data-map-region'); renderBoss(); return; }
 });
 bossBody.addEventListener('change',function(e){
   if(e.target.id==='bossRegion'){ bossState.region=e.target.value; reRenderBossList(); }
