@@ -153,7 +153,7 @@ main{max-width:1180px;width:100%;margin:0 auto;padding:8px 12px calc(var(--safe-
 .sheet-head .titles .sub{font-size:.82rem;color:var(--muted);margin-top:2px}
 .sheet-head .titles .rolechip{display:inline-block;margin-top:8px;font-size:.7rem;font-weight:700;
   padding:4px 10px;border-radius:999px;color:#fff}
-#sheetClose,#engClose,#bossClose{position:absolute;top:calc(var(--safe-t) + 10px);right:12px;z-index:5;width:38px;height:38px;
+#sheetClose,#engClose,#bossClose,#dropClose{position:absolute;top:calc(var(--safe-t) + 10px);right:12px;z-index:5;width:38px;height:38px;
   border-radius:50%;border:1px solid var(--border);background:rgba(20,22,28,.7);color:var(--text);
   font-size:1.2rem;line-height:1;display:flex;align-items:center;justify-content:center}
 .sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px calc(var(--safe-b) + 40px);flex:1}
@@ -319,6 +319,9 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
 .ebadge{font-size:.64rem;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.2px;white-space:nowrap}
 .ebadge.excl{background:var(--r-melee);color:#fff}
 .ebadge.common{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+/* 층 미확인 = 고유(딥레드)도 공통(오프화이트)도 아닌 중립 — 경고색 아님 */
+.ebadge.unkscope{background:transparent;color:var(--muted);
+  border:1px dashed var(--muted);opacity:.85}
 .ebadge.all13{background:var(--r-tank);color:#fff}
 .ebadge.slot{background:var(--card2);color:#cfcdc7;border:1px solid var(--border)}
 .ebadge.wsp-melee{background:var(--r-melee);color:#fff}
@@ -382,6 +385,88 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
 .bsrc details>summary{font-size:.7rem;color:var(--muted);cursor:pointer;list-style:none}
 .bsrc details>summary::-webkit-details-marker{display:none}
 .bsrc .sources li{font-size:.7rem}
+
+/* ===== 사냥터 드랍 특별 카드 ===== */
+.card.drop-card{border:1.5px solid var(--r-melee);
+  background:linear-gradient(180deg,#2a1917,#1c2029)}
+.card.drop-card .imgwrap{display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(80% 80% at 50% 42%,#2e1a17,#141821)}
+.card.drop-card .imgwrap::after{background:none}
+.card.drop-card .drop-emoji{font-size:2.1rem;filter:drop-shadow(0 2px 5px rgba(0,0,0,.55))}
+.card.drop-card .rolechip{background:var(--r-melee);color:#fff}
+.card.drop-card .kr{color:#e8b4b0}
+
+/* ===== 사냥터 드랍 시트 (각인 시트 마크업 재사용) ===== */
+#dropSheet{position:fixed;inset:0;z-index:70;display:none}
+#dropSheet.open{display:block}
+#dropSheet .sheet-panel{max-width:1040px}
+.drop-head{background:linear-gradient(180deg,#2a1917,var(--bg))}
+.drop-head .et{color:#e8b4b0}
+.drop-zones{display:flex;flex-direction:column;gap:12px}
+/* 층(zone) 카드 */
+.zcard{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold-dim);
+  border-radius:11px;padding:10px 12px}
+.zcard.unkzone{border-left-color:var(--muted);opacity:.9}
+.zcard .zh{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.zcard .zname{font-size:1rem;font-weight:800;color:var(--text)}
+.zmeta{display:flex;flex-direction:column;gap:3px;font-size:.8rem;line-height:1.5;margin-bottom:7px}
+.zmeta .zrow{display:flex;gap:7px}
+.zmeta .zlab{color:var(--muted);flex:none;min-width:44px;font-size:.74rem;font-weight:700}
+.zmeta .zval{color:#dcdad4}
+/* 드랍 섹션 (고유 / 공통) */
+.dsec{margin-top:8px}
+.dsec-h{font-size:.74rem;font-weight:800;letter-spacing:.3px;margin:0 0 6px;
+  display:flex;align-items:center;gap:6px}
+.dsec-h::before{content:"";width:4px;height:12px;border-radius:2px;background:currentColor}
+.dsec-h .dcount{font-size:.68rem;font-weight:600;color:var(--muted)}
+.dsec.uniq .dsec-h{color:var(--r-melee)}
+.dsec.shared .dsec-h{color:var(--text)}
+.dsec.unkscope .dsec-h{color:var(--muted)}
+.dsec-why{font-size:.71rem;color:var(--muted);line-height:1.45;margin:0 0 6px}
+.dsec-empty{font-size:.75rem;color:var(--muted);font-style:italic;
+  padding:7px 10px;background:var(--card2);border:1px dashed var(--border);border-radius:8px}
+.drop-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px;align-content:start}
+/* 이 층 고유 = 딥레드 / 공통 = 하얀·중립 */
+.ditem{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border);
+  border-radius:9px;padding:6px 10px}
+/* border-color 축약을 먼저 두고 border-left-color로 덮어써야 좌측 바가 진한 딥레드로 남는다 */
+.ditem.excl{border-color:rgba(165,52,47,.55);border-left-color:var(--r-melee);
+  background:linear-gradient(180deg,rgba(165,52,47,.1),var(--card))}
+.ditem.excl .dn{color:var(--r-melee);font-weight:800}
+.ditem.common{border-left-color:var(--border);background:var(--card2)}
+.ditem.common .dn{color:var(--text)}
+/* 층 미확인 항목 — 점선 좌측바로 중립 표기(공통 흰색과 구분, 빨강 아님) */
+.ditem.unkscope{border-left-style:dashed;border-left-color:var(--muted);background:var(--card2)}
+.ditem.unkscope .dn{color:#c6c4bf}
+.ditem .dn{font-size:.86rem;font-weight:700;line-height:1.22}
+.ditem .dfrom{font-size:.71rem;line-height:1.25;margin-top:2px;color:var(--muted)}
+.ditem .dnote{font-size:.71rem;line-height:1.35;margin-top:3px;color:var(--muted)}
+.ditem .dmeta{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;align-items:center}
+.zconf{display:inline-block;font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:6px;
+  background:var(--card2);border:1px solid var(--border);color:var(--muted)}
+.zconf.ok{color:var(--r-ranged);border-color:rgba(79,122,85,.5)}
+.zconf.part{color:var(--gold);border-color:var(--gold-dim)}
+.zconf.unk{opacity:.6}
+.zunk-note{font-size:.78rem;color:var(--muted);line-height:1.5;
+  padding:9px 11px;background:var(--card2);border:1px dashed var(--border);border-radius:9px}
+/* 미확인·드랍없음 층의 긴 해명문 접기 — 카드/배지는 남기고 사유만 접는다 */
+.zunk-fold>summary{font-size:.74rem;color:var(--muted);cursor:pointer;list-style:none;
+  padding:2px 0;user-select:none}
+.zunk-fold>summary::-webkit-details-marker{display:none}
+.zunk-fold>summary::after{content:" ▾";font-size:.66rem;opacity:.75}
+.zunk-fold[open]>summary::after{content:" ▴"}
+.zunk-fold>summary:hover{color:var(--text)}
+.zunk-fold-b{margin-top:6px}
+.zsrc{margin-top:8px}
+.zsrc details>summary{font-size:.7rem;color:var(--muted);cursor:pointer;list-style:none}
+.zsrc details>summary::-webkit-details-marker{display:none}
+.zsrc .sources li{font-size:.7rem}
+.drop-caveats{margin-top:16px;font-size:.75rem;color:var(--muted);line-height:1.6;
+  background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.drop-caveats .cvh{font-size:.72rem;font-weight:800;color:var(--gold);margin-bottom:5px}
+.drop-caveats ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:3px}
+.drop-caveats li.key{color:#e8b4b0;font-weight:700}
+.gnote{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:9px}
 
 /* ===== 오리지널 지역 맵 보드 (인벤 워터마크 미사용·자체 데이터 시각화) ===== */
 .map-hint{font-size:.75rem;color:var(--muted);line-height:1.55;margin-bottom:10px;
@@ -545,9 +630,20 @@ table.ztable td.mut{color:var(--muted);font-style:italic}
   </div>
 </div>
 
+<!-- ===== 사냥터 드랍 전용 시트 ===== -->
+<div id="dropSheet" aria-modal="true" role="dialog">
+  <div class="sheet-bg" data-dclose></div>
+  <div class="sheet-panel">
+    <button id="dropClose" data-dclose aria-label="닫기">✕</button>
+    <div class="eng-head drop-head" id="dropHead"></div>
+    <div class="eng-body" id="dropBody"></div>
+  </div>
+</div>
+
 <script src="데이터.js"></script>
 <script src="각인상자.js"></script>
 <script src="보스.js"></script>
+<script src="사냥터드랍.js"></script>
 <script>
 (function(){
 "use strict";
@@ -652,6 +748,28 @@ var BOSS_TABS = [
   {key:'dungeon', label:'던전·탑', groups:['dungeon_tower']},
   {key:'raid', label:'레이드·월드', groups:['raid_world']}
 ];
+
+/* ---------- 사냥터 드랍 데이터 ---------- */
+var DROP = window.LM_DROP || null;
+var DROP_META = (DROP && DROP.meta) || {};
+var DROP_GROUPS = (DROP && DROP.groups) || [];
+var D_LABEL = DROP_META.groupLabel || {};
+/* groupOrder 우선, 없으면 groups 배열 순서로 폴백 */
+var D_ORDER = (function(){
+  var order = (DROP_META.groupOrder || []).filter(function(k){
+    return DROP_GROUPS.some(function(g){ return g.key===k; });
+  });
+  DROP_GROUPS.forEach(function(g){ if(order.indexOf(g.key)<0) order.push(g.key); });
+  return order;
+})();
+function dropGroupOf(k){
+  for(var i=0;i<DROP_GROUPS.length;i++){ if(DROP_GROUPS[i].key===k) return DROP_GROUPS[i]; }
+  return null;
+}
+function dropGroupLabel(k){
+  var g=dropGroupOf(k);
+  return D_LABEL[k] || (g && g.label) || k;
+}
 
 /* 지역명 정규화 — 슬래시 앞 기준 + 괄호/꼬리말 제거 (지역맵↔보스 링크·드롭다운 중복 정리) */
 var REGION_BY_NO = {};
@@ -800,10 +918,19 @@ function bossCardHTML(){
     +'<div class="body"><div class="kr">보스 위치</div>'
       +'<div class="matchhint-slot"></div></div></div>';
 }
+/* 16번째 특별 카드 — 사냥터 드랍 (필터/검색 무관 항상 표시) */
+function dropCardHTML(){
+  if(!DROP) return '';
+  return '<div class="card drop-card" data-drop-card="1">'
+    +'<div class="imgwrap"><span class="rolechip">특별</span>'
+      +'<span class="drop-emoji">💰</span></div>'
+    +'<div class="body"><div class="kr">사냥터 드랍</div>'
+      +'<div class="matchhint-slot"></div></div></div>';
+}
 function render(){
   var q=curQuery.toLowerCase().trim();
   var shown=0;
-  grid.innerHTML=CLASSES.map(cardHTML).join('') + engCardHTML() + bossCardHTML();
+  grid.innerHTML=CLASSES.map(cardHTML).join('') + engCardHTML() + bossCardHTML() + dropCardHTML();
   CLASSES.forEach(function(c){
     var el=grid.querySelector('.card[data-key="'+cssEsc(c.key)+'"]');
     if(!el) return;
@@ -824,6 +951,8 @@ function render(){
   if(ec) ec.addEventListener('click', openEngSheet);
   var bc=grid.querySelector('.boss-card');
   if(bc) bc.addEventListener('click', openBossSheet);
+  var dc=grid.querySelector('.drop-card');
+  if(dc) dc.addEventListener('click', openDropSheet);
   emptyEl.style.display = shown? 'none':'block';
 }
 function cssEsc(s){ return String(s).replace(/["\\]/g,'\\$&'); }
@@ -1521,6 +1650,221 @@ bossBody.addEventListener('input',function(e){
   if(e.target.id==='bossSearch'){ bossState.q=e.target.value.toLowerCase().trim(); reRenderBossList(); }
 });
 
+/* ---------- 사냥터 드랍 시트 ---------- */
+var dropSheet=document.getElementById('dropSheet');
+var dropHead=document.getElementById('dropHead');
+var dropBody=document.getElementById('dropBody');
+var dropState={ group:'', q:'' };
+
+/* 데이터에 caveats가 없을 때의 폴백 — 이 두 줄은 반드시 노출 */
+var DROP_CAVEATS_FALLBACK = [
+  '드랍은 사냥터가 아니라 몬스터 단위다 — 같은 층이어도 어떤 몬스터를 잡느냐로 나오는 게 달라진다.',
+  '아인하사드의 축복이 0이면 아이템이 아예 안 나온다.'
+];
+function dropHl(text){
+  var t=esc(text), q=dropState.q;
+  if(!q) return t;
+  try{ return t.replace(new RegExp('('+reEsc(q)+')','gi'),'<mark>$1</mark>'); }
+  catch(e){ return t; }
+}
+/* 신뢰도 → 배지 클래스 (보스 패널과 동일 규칙 재사용) */
+function dropConfClass(c){ return bossConfClass(c); }
+
+function dropItemMatch(d,q){
+  var blob=[d.name,d.kind,d.note].concat(d.from||[]).join('  ').toLowerCase();
+  return blob.indexOf(q)>=0;
+}
+function dropZoneMatch(z,q){
+  var blob=[z.zone,z.levelRange,z.entry,z.note].concat(z.monsters||[]).join('  ').toLowerCase();
+  return blob.indexOf(q)>=0;
+}
+/* 검색 적용 결과 뷰 — 매치 없으면 null (층 자체가 매치면 드랍 전부 유지) */
+function dropZoneView(z){
+  var q=dropState.q;
+  var all=z.drops||[];
+  if(!q) return { zone:z, drops:all };
+  if(dropZoneMatch(z,q)) return { zone:z, drops:all };
+  var hit=all.filter(function(d){ return dropItemMatch(d,q); });
+  return hit.length ? { zone:z, drops:hit } : null;
+}
+
+function dropItemHTML(d){
+  var uniq = d.scope==='unique';
+  /* scope 'unknown' = 층 미확인 구역에만 있고 유효 층 등장이 0회인 드랍.
+     '여러 층에서 확인'이 아니므로 공통 배지를 달면 거짓말이 된다 — 중립 표기로 분리. */
+  var unkScope = d.scope==='unknown';
+  var badge;
+  if(uniq) badge='<span class="ebadge excl">이 층에서만</span>';
+  else if(unkScope) badge='<span class="ebadge unkscope">층 미확인</span>';
+  else if(d.scope==='all') badge='<span class="ebadge common">전층 공통</span>';
+  else badge='<span class="ebadge common">'
+    +(d.sharedCount>1 ? esc(d.sharedCount)+'개 층 공통' : '공통')+'</span>';
+
+  var kind = d.kind ? '<span class="ebadge slot">'+esc(d.kind)+'</span>' : '';
+  var conf = isUnknown(d.confidence)
+    ? '<span class="zconf '+dropConfClass(d.confidence)+'">'+esc(d.confidence)+'</span>' : '';
+  var src = d.source ? '<a class="zconf" href="'+esc(d.source)+'" target="_blank" rel="noopener">출처</a>' : '';
+  var from = (d.from && d.from.length)
+    ? '<div class="dfrom">🐾 '+dropHl(d.from.join(', '))+'</div>' : '';
+  var note = d.note ? '<div class="dnote">'+dropHl(d.note)+'</div>' : '';
+
+  return '<div class="ditem '+(uniq?'excl':(unkScope?'unkscope':'common'))+'">'
+    +'<div class="dn">'+dropHl(d.name)+'</div>'
+    +from+note
+    +'<div class="dmeta">'+badge+kind+conf+src+'</div>'
+    +'</div>';
+}
+
+function dropZoneHTML(zv,group){
+  var z=zv.zone, drops=zv.drops||[];
+  var zlab=(group && group.zoneLabel) || '';
+  var raw=z.drops||[];
+
+  var head='<div class="zh"><span class="zname">'+dropHl(z.zone)+'</span>'
+    +(z.confidence?'<span class="zconf '+dropConfClass(z.confidence)+'">'+esc(z.confidence)+'</span>':'')
+    +'</div>';
+
+  var rows='';
+  if(z.levelRange) rows+='<div class="zrow"><span class="zlab">권장Lv</span><span class="zval">'+dropHl(z.levelRange)+'</span></div>';
+  if(z.entry)      rows+='<div class="zrow"><span class="zlab">입장</span><span class="zval">'+dropHl(z.entry)+'</span></div>';
+  if(z.monsters && z.monsters.length)
+    rows+='<div class="zrow"><span class="zlab">몬스터</span><span class="zval">'+dropHl(z.monsters.join(', '))+'</span></div>';
+  if(z.note) rows+='<div class="zrow"><span class="zlab">메모</span><span class="zval">'+dropHl(z.note)+'</span></div>';
+  var meta=rows?'<div class="zmeta">'+rows+'</div>':'';
+
+  var body;
+  if(!raw.length){
+    /* 드랍 근거가 없는 층 — 카드를 지우지 않고 정직하게 표기 */
+    body='<div class="zunk-note">⚠ '+(isUnknown(z.confidence)
+      ? '웹 공개 자료에 층별 드랍 근거 없음 — 미확인'
+      : '이 '+(zlab||'구역')+'의 드랍 목록은 아직 정리되지 않았어요 — 미확인')+'</div>';
+  } else {
+    var uniq=drops.filter(function(d){ return d.scope==='unique'; });
+    /* scope 'unknown'은 공통 섹션에 섞지 않는다 — 유효 층 등장 0회라 '공통'이 아니다. */
+    var unks=drops.filter(function(d){ return d.scope==='unknown'; });
+    var shar=drops.filter(function(d){ return d.scope!=='unique' && d.scope!=='unknown'; });
+    body='<div class="dsec uniq"><div class="dsec-h">이 '+(zlab||'층')+'에서만'
+      +'<span class="dcount">'+uniq.length+'종</span></div>'
+      +(uniq.length
+        ? '<div class="drop-items">'+uniq.map(dropItemHTML).join('')+'</div>'
+        : '<div class="dsec-empty">이 '+(zlab||'층')+' 단독 드랍 확인된 것 없음</div>')
+      +'</div>';
+    body+='<div class="dsec shared"><div class="dsec-h">공통 드랍'
+      +'<span class="dcount">'+shar.length+'종</span></div>'
+      +(shar.length
+        ? '<div class="drop-items">'+shar.map(dropItemHTML).join('')+'</div>'
+        : '<div class="dsec-empty">공통 드랍으로 묶인 항목 없음</div>')
+      +'</div>';
+    if(unks.length){
+      body+='<div class="dsec unkscope"><div class="dsec-h">층 미확인 드랍'
+        +'<span class="dcount">'+unks.length+'종</span></div>'
+        +'<div class="dsec-why">이 구역은 출현 '+(zlab||'층')+'을 특정하지 못한 몬스터 묶음이라 '
+        +'고유/공통 계산에서 빠집니다. 아래 항목은 확인된 '+(zlab||'층')+'에서는 나온 적이 없어 '
+        +'공통으로 묶지 않았습니다.</div>'
+        +'<div class="drop-items">'+unks.map(dropItemHTML).join('')+'</div>'
+      +'</div>';
+    }
+  }
+
+  var src='';
+  if(z.sources && z.sources.length){
+    src='<div class="zsrc"><details><summary>출처 '+z.sources.length+'건 ▾</summary>'
+      +'<ul class="sources">'+z.sources.map(function(u){
+          return '<li><a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(u)+'</a></li>';
+        }).join('')+'</ul></details></div>';
+  }
+
+  /* 드랍 근거가 없는 미확인 층은 해명문이 길어서, 펴 두면 이 뒤의 실제 드랍 층이
+     모바일 첫 화면 밖으로 밀린다. 카드와 '미확인' 배지는 그대로 두고 사유만 접는다.
+     검색 중에는 매치가 접힘 뒤로 숨으면 안 되니 펼친 채로 둔다. */
+  var foldWhy = !raw.length && isUnknown(z.confidence);
+  if(foldWhy){
+    return '<div class="zcard unkzone">'+head
+      +'<details class="zunk-fold"'+(dropState.q?' open':'')+'>'
+      +'<summary>미확인 — 사유 보기</summary>'
+      +'<div class="zunk-fold-b">'+meta+body+src+'</div>'
+      +'</details></div>';
+  }
+
+  return '<div class="zcard'+(!raw.length?' unkzone':'')+'">'+head+meta+body+src+'</div>';
+}
+
+function dropListHTML(){
+  var g=dropGroupOf(dropState.group);
+  if(!g) return '<div class="empty" style="padding:30px">사냥터 드랍 데이터가 없어요.</div>';
+  var views=(g.zones||[]).map(dropZoneView).filter(Boolean);
+  if(!views.length){
+    return '<div class="empty" style="padding:30px">'
+      +(dropState.q?'조건에 맞는 드랍이 없어요.':'이 그룹에 등록된 사냥터가 없어요.')+'</div>';
+  }
+  return '<div class="drop-zones">'+views.map(function(zv){ return dropZoneHTML(zv,g); }).join('')+'</div>';
+}
+function reRenderDropList(){ var w=document.getElementById('dropListWrap'); if(w) w.innerHTML=dropListHTML(); }
+
+/* 반드시 눈에 띄어야 하는 2줄만 정밀 매칭.
+   ①"…사냥터가 아니라 몬스터 단위" — "드랍은 몬스터 단위라…"(다른 고지)와 구분하려고 '아니라'를 요구
+   ②"아인하사드의 축복이 0" — "축복 수치에 비례해…"(다른 고지)와 구분하려고 '0'을 요구 */
+var DROP_KEY_CAVEAT = /아니라\s*['"'']?\s*몬스터\s*['"'']?\s*단위|아인하사드.{0,12}축복이\s*0/;
+function dropCaveatsHTML(){
+  var cv=(DROP_META.caveats && DROP_META.caveats.length) ? DROP_META.caveats : DROP_CAVEATS_FALLBACK;
+  /* 고지가 십수 줄이라 색만으론 묻힌다 — 핵심 2줄을 맨 위로 올리고 나머지는 원래 순서 유지 */
+  var key=[], rest=[];
+  cv.forEach(function(c){ (DROP_KEY_CAVEAT.test(String(c||''))?key:rest).push(c); });
+  return '<div class="drop-caveats"><div class="cvh">⚑ 읽고 가세요 — 정직 고지</div><ul>'
+    +key.map(function(c){ return '<li class="key">'+esc(c)+'</li>'; }).join('')
+    +rest.map(function(c){ return '<li>'+esc(c)+'</li>'; }).join('')
+    +'</ul></div>';
+}
+
+function renderDrop(){
+  var g=dropGroupOf(dropState.group);
+  var tabs=D_ORDER.map(function(k){
+    return '<button class="eng-tab'+(k===dropState.group?' active':'')+'" data-drop-tab="'+esc(k)+'">'
+      +esc(dropGroupLabel(k))+'</button>';
+  }).join('');
+  var c=DROP_META.counts||{};
+  var sub=[];
+  if(c.groups) sub.push(c.groups+'개 그룹');
+  if(c.zones)  sub.push(c.zones+'개 사냥터');
+  if(c.drops)  sub.push(c.drops+'건 드랍');
+  dropHead.innerHTML='<div class="et">💰 사냥터 드랍</div>'
+    +'<div class="esub">'+esc(DROP_META.server||'한국 본서버')+' 사냥터별 드랍 목록 · '
+      +(sub.length?esc(sub.join(' · '))+' · ':'')+'층 고유(빨강)/공통(흰색) 구분 · 미확인 정직표기</div>'
+    +'<div class="eng-tabs">'+tabs+'</div>';
+
+  var legend='<div class="eng-legend">'
+    +'<span class="lg"><span class="sw" style="background:var(--r-melee)"></span>이 층에서만 나오는 고유 드랍</span>'
+    +'<span class="lg"><span class="sw" style="background:var(--text)"></span>여러 층 공통 드랍</span>'
+    +'<span class="lg"><span class="ebadge unkscope">층 미확인</span> 어느 층에서 나오는지 특정 못함 — 고유·공통 어느 쪽도 아님</span>'
+    +'<span class="lg"><span class="zconf unk">미확인</span> 웹 근거 없으면 지우지 않고 그대로 표기</span>'
+    +'</div>';
+  var gnote=(g && g.note) ? '<div class="gnote">✦ '+esc(g.note)+'</div>' : '';
+
+  dropBody.innerHTML=gnote
+    +'<input class="eng-search" id="dropSearch" type="search" autocomplete="off" '
+      +'placeholder="아이템명·몬스터명 검색…" value="'+esc(dropState.q)+'" />'
+    +legend
+    +'<div id="dropListWrap">'+dropListHTML()+'</div>'
+    +dropCaveatsHTML();
+  dropBody.scrollTop=0;
+}
+function openDropSheet(){
+  if(!DROP) return;
+  dropState={ group:(D_ORDER[0]||''), q:'' };
+  renderDrop();
+  dropSheet.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDropSheet(){ dropSheet.classList.remove('open'); document.body.style.overflow=''; }
+dropSheet.addEventListener('click',function(e){ if(e.target.hasAttribute('data-dclose')) closeDropSheet(); });
+dropHead.addEventListener('click',function(e){
+  var t=e.target.closest('[data-drop-tab]');
+  if(t){ dropState.group=t.getAttribute('data-drop-tab'); dropState.q=''; renderDrop(); }
+});
+dropBody.addEventListener('input',function(e){
+  if(e.target.id==='dropSearch'){ dropState.q=e.target.value.toLowerCase().trim(); reRenderDropList(); }
+});
+
 /* ---------- 검색 ---------- */
 var searchEl=document.getElementById('search');
 var clearBtn=document.getElementById('clearBtn');
@@ -1540,7 +1884,8 @@ document.addEventListener('keydown',function(e){
     e.preventDefault();
     searchEl.focus(); searchEl.select();
   } else if(k==='escape'){
-    if(bossSheet.classList.contains('open')){ closeBossSheet(); }
+    if(dropSheet.classList.contains('open')){ closeDropSheet(); }
+    else if(bossSheet.classList.contains('open')){ closeBossSheet(); }
     else if(engSheet.classList.contains('open')){ closeEngSheet(); }
     else if(sheet.classList.contains('open')){ closeSheet(); }
     else if(document.activeElement===searchEl && searchEl.value){ searchEl.value=''; onSearch(); }
